@@ -28,6 +28,8 @@ gem 'instagram'
 gem 'figaro'
 gem 'twitter-bootstrap-rails'
 
+gem 'nokogiri'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

@@ -1,4 +1,6 @@
 RailsAngular::Application.routes.draw do
+  get "glasses/index"
+
   resources :photos
 
   root :to => 'photos#index'

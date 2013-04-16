@@ -74,6 +74,7 @@ GEM
     mime-types (1.22)
     multi_json (1.7.2)
     multipart-post (1.2.0)
+    nokogiri (1.5.9)
     polyglot (0.3.3)
     pry (0.9.12)
       coderay (~> 1.0.5)
@@ -143,6 +144,7 @@ DEPENDENCIES
   figaro
   instagram
   jquery-rails
+  nokogiri
   pry
   rails (= 3.2.13)
   sass-rails (~> 3.2.3)
