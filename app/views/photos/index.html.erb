@@ -1,0 +1,47 @@
+<h1>Angular Test</h1>
+
+<div ng-app = "PhotoApp">
+
+  <div ng-controller="FirstCtrl">
+    <input ng-model="data.message">
+    <h3>{{data.message}}</h3>
+  </div>
+  <br>
+  <div ng-controller="SecondCtrl">
+    <input ng-model="data.message">
+    <h3>{{reverseMessage(data.message)}}</h3>
+  </div>
+
+  <br>
+  <hr>
+  <br>
+
+  <div ng-controller="PhotoCtrl" class="photo_set">
+
+    <div class="search">
+      <input ng-model="query">
+      <h3>Filter Term: {{query}}<h3>
+      <input ng-model="stylechoice">
+      <h5>Styleize!: {{stylechoice}}</h5>
+
+      <h5>There are {{getTotalPhotos()}} photos in this collection</h5>
+    </div>
+
+    <div class="detail">
+      <p>{{photo.selected}} hello</p>
+    </div>
+
+    <div class="main"> 
+      <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
+        <button ng-click="remove(photo)">Remove</button>
+        <button ng-click="select(photo)">Detail View</button>
+        <p>User: {{photo.user_name}}</p>
+        <p>Caption: {{photo.caption}}</p>
+        <img src="{{photo.image}}"><br>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

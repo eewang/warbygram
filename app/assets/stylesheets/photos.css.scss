@@ -1,0 +1,46 @@
+// Place all the styles related to the Photos controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.bold {
+  font-weight: bold;
+  border-width: 10px;
+}
+
+.blue {
+  color: blue;
+  border-width: 10px;
+}
+
+.red {
+  color: red;
+}
+
+.orange {
+  color: orange;
+}
+
+.photo {
+  border: solid;
+  display: inline-block;
+  width: 25%;
+  padding: 2em;
+  margin-bottom: 2em;
+  margin-right: 2em;
+
+  img {
+    width: 100%;
+  }
+}
+
+.photo_set {
+  width: 100%;
+}
+
+.main {
+  width: 70%;
+  border-right: solid;
+}
+
+.detail {
+}
