@@ -44,6 +44,13 @@ class Photo < ActiveRecord::Base
         t.save
         p.tags << t
       end      
+      photo.comments.data.each do |comment|
+        c = Comment.where(:comment_id => comment.id).first_or_create
+        c.comment = comment.text
+        c.comment_id = comment.id
+        c.save
+        p.comments << c
+      end
       if photo.location
         p.location = photo.location.name
         p.latitude = photo.location.latitude
