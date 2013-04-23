@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423012715) do
+ActiveRecord::Schema.define(:version => 20130423030347) do
 
   create_table "comments", :force => true do |t|
     t.string   "comment"
@@ -36,14 +36,14 @@ ActiveRecord::Schema.define(:version => 20130423012715) do
     t.string   "caption"
     t.string   "location"
     t.string   "user_name"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "low_res_image_url"
     t.string   "latitude"
     t.string   "longitude"
     t.string   "instagram_id"
     t.string   "std_res_image_url"
-    t.string   "thumnail_image_url"
+    t.string   "thumbnail_image_url"
     t.string   "filter"
     t.string   "created_time"
     t.string   "link"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20130423012715) do
     t.string   "photos_user"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "name"
   end
 
 end
