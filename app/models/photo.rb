@@ -3,6 +3,7 @@ class Photo < ActiveRecord::Base
   has_many :photo_tags
   has_many :tags, :through => :photo_tags
   has_many :comments
+  belongs_to :instagram_user
 
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
