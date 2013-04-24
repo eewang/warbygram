@@ -1,6 +1,7 @@
 class Photo < ActiveRecord::Base
   attr_accessible :caption, :location, :user_name, :std_res_image_url, :low_res_image_url, :thumbnail_image_url, :latitude, :longitude, :instagram_id
-  has_many :tags
+  has_many :photo_tags
+  has_many :tags, :through => :photo_tags
   has_many :comments
 
   def self.save_instagram_popular_photos
