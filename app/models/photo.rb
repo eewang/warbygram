@@ -55,8 +55,15 @@ class Photo < ActiveRecord::Base
   end
 
   def save_tags(instagram_photo)
+
+      # if tag exists, take that tag and build a photo_tag association for the saved photo
+      # if tag does not exist, create a new tag and build a photo_tag association for the saved photo
+
+
+    # get all tags for instagram_photo
     instagram_photo.tags.each do |tag|
-      t = Tag.new
+      # look into tags table and see if tag exists
+      t = Tag.where(:name)
       t.name = tag
       t.save
       self.tags << t
