@@ -3,6 +3,7 @@ class Photo < ActiveRecord::Base
   has_many :photo_tags
   has_many :tags, :through => :photo_tags
   has_many :comments
+  has_many :likes
   belongs_to :instagram_user
 
   def self.save_instagram_popular_photos

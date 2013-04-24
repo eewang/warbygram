@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424185118) do
+ActiveRecord::Schema.define(:version => 20130424185557) do
 
   create_table "comments", :force => true do |t|
     t.string   "comment"
@@ -39,6 +39,13 @@ ActiveRecord::Schema.define(:version => 20130424185118) do
     t.string   "uid"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+  end
+
+  create_table "likes", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "instagram_user_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "photo_tags", :force => true do |t|
