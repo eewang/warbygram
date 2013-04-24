@@ -3,4 +3,6 @@ class Comment < ActiveRecord::Base
   belongs_to :photo
   belongs_to :instagram_user
   
+  include Saveable::InstanceMethods
+
 end

@@ -6,6 +6,8 @@ class Photo < ActiveRecord::Base
   has_many :likes
   belongs_to :instagram_user
 
+  include Saveable::InstanceMethods
+
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
     photos.each do |photo|
@@ -33,7 +35,6 @@ class Photo < ActiveRecord::Base
     photos.each do |photo|
       # Creating a photo and associating the Instagram image properties
       p = Photo.where(:instagram_id => photo.id).first_or_create
-      p.user_name = photo.user.username
       p.caption = photo.caption.text if photo.caption
       p.std_res_image_url = photo.images.standard_resolution.url
       p.low_res_image_url = photo.images.low_resolution.url
@@ -42,33 +43,22 @@ class Photo < ActiveRecord::Base
       p.filter = photo.filter
       p.created_time = photo.created_time
       p.link = photo.link
-
-      # Saving tags
       p.save_tags(photo)
-
-      # Saving comments  
       p.save_comments(photo)
-
-      # Saving location
       p.save_location(photo)
-
+      p.save_user(photo)
+      p.save_likes(photo)
       p.save
     end
   end
 
   def save_tags(instagram_photo)
-
-      # if tag exists, take that tag and build a photo_tag association for the saved photo
-      # if tag does not exist, create a new tag and build a photo_tag association for the saved photo
-
-
-    # get all tags for instagram_photo
     instagram_photo.tags.each do |tag|
-      # look into tags table and see if tag exists
-      t = Tag.where(:name)
-      t.name = tag
+      t = Tag.where(:name => tag).first_or_create
+      self.photo_tags.build(:tag_id => t.id)
+      t.photo_id = self.id
       t.save
-      self.tags << t
+      self.save
     end 
   end
 
@@ -77,8 +67,19 @@ class Photo < ActiveRecord::Base
       c = Comment.where(:comment_id => comment.id).first_or_create
       c.comment = comment.text
       c.comment_id = comment.id
+      c.photo_id = self.id
+      c.comment_date = comment.created_time
+      c.save_user(comment)
       c.save
-      self.comments << c
+    end
+  end
+
+  def save_likes(instagram_photo)
+    instagram_photo.likes.data.each do |like|
+      l = Like.new
+      l.photo_id = self.id
+      l.save_user(like)
+      l.save
     end
   end
 
