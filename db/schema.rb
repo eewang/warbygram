@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423030347) do
+ActiveRecord::Schema.define(:version => 20130424220741) do
 
   create_table "comments", :force => true do |t|
     t.string   "comment"
@@ -32,10 +32,32 @@ ActiveRecord::Schema.define(:version => 20130423030347) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "instagram_users", :force => true do |t|
+    t.string   "user_name"
+    t.string   "full_name"
+    t.string   "profile_picture"
+    t.string   "uid"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "likes", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "instagram_user_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  create_table "photo_tags", :force => true do |t|
+    t.integer  "photo_id"
+    t.integer  "tag_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "photos", :force => true do |t|
     t.string   "caption"
     t.string   "location"
-    t.string   "user_name"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
     t.string   "low_res_image_url"
@@ -47,13 +69,13 @@ ActiveRecord::Schema.define(:version => 20130423030347) do
     t.string   "filter"
     t.string   "created_time"
     t.string   "link"
+    t.string   "instagram_user_id"
   end
 
   create_table "tags", :force => true do |t|
     t.integer  "photo_id"
-    t.string   "photos_user"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "name"
   end
 
