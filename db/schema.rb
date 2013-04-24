@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416202835) do
+ActiveRecord::Schema.define(:version => 20130423030347) do
+
+  create_table "comments", :force => true do |t|
+    t.string   "comment"
+    t.integer  "photo_id"
+    t.string   "comment_date"
+    t.string   "instagram_user_id"
+    t.string   "comment_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
   create_table "glasses", :force => true do |t|
     t.string   "name"
@@ -26,12 +36,25 @@ ActiveRecord::Schema.define(:version => 20130416202835) do
     t.string   "caption"
     t.string   "location"
     t.string   "user_name"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-    t.string   "image"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.string   "low_res_image_url"
     t.string   "latitude"
     t.string   "longitude"
     t.string   "instagram_id"
+    t.string   "std_res_image_url"
+    t.string   "thumbnail_image_url"
+    t.string   "filter"
+    t.string   "created_time"
+    t.string   "link"
+  end
+
+  create_table "tags", :force => true do |t|
+    t.integer  "photo_id"
+    t.string   "photos_user"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "name"
   end
 
 end
