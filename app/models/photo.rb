@@ -8,6 +8,8 @@ class Photo < ActiveRecord::Base
 
   include Saveable::InstanceMethods
 
+  WARBY_TAGS = ["warby", "warbyparker"]
+
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
     photos.each do |photo|
@@ -49,6 +51,23 @@ class Photo < ActiveRecord::Base
       p.save_user(photo)
       p.save_likes(photo)
       p.save
+    end
+  end
+
+  def self.get_warby_tag_metadata
+    WARBY_TAGS.each do |tag|
+      tag_results = InstagramWrapper.new.tag_search(:tag => tag)
+      tag_results.each do |tag_result|
+        item = WarbyTag.where(:tag => tag_result[:name]).first_or_create
+        item.count = tag_result[:media_count]
+        item.save
+      end
+    end
+  end
+
+  def self.save_warby_tagged_photos(tag_array)
+    tag_array.each do |tag_result|
+      Photo.save_tagged_photos(tag_result[:name])
     end
   end
 

@@ -35,7 +35,7 @@
       <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
         <button ng-click="remove(photo)">Remove</button>
         <button ng-click="select(photo)">Detail View</button>
-        <p>User: {{photo.user_name}}</p>
+        <p>User: {{photo.instagram_user_id}}</p>
         <p>Caption: {{photo.caption}}</p>
         <img src="{{photo.low_res_image_url}}"><br>
       </div>

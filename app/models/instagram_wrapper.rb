@@ -20,4 +20,9 @@ class InstagramWrapper
     Instagram.user_media_feed(options)
   end
 
+  def tag_search(options) # InstagramWrapper.new({:tag => "warbyparker"})
+    tag = options[:tag]
+    Instagram.tag_search(tag)
+  end
+  
 end
