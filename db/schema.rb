@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424220741) do
+ActiveRecord::Schema.define(:version => 20130428171654) do
 
   create_table "comments", :force => true do |t|
     t.string   "comment"
@@ -30,6 +30,12 @@ ActiveRecord::Schema.define(:version => 20130424220741) do
     t.string   "image"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "style"
+    t.string   "color"
+    t.string   "collection"
+    t.boolean  "optical"
+    t.string   "sku"
+    t.boolean  "active"
   end
 
   create_table "instagram_users", :force => true do |t|
