@@ -35,7 +35,6 @@ class Photo < ActiveRecord::Base
   def self.save_tagged_photos(instagram_tag)
     photos = InstagramWrapper.new.tag_recent_media({:tag => instagram_tag})
     photos.each do |photo|
-      # Creating a photo and associating the Instagram image properties
       p = Photo.where(:instagram_id => photo.id).first_or_create
       p.caption = photo.caption.text if photo.caption
       p.std_res_image_url = photo.images.standard_resolution.url
@@ -65,9 +64,9 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  def self.save_warby_tagged_photos(tag_array)
-    tag_array.each do |tag_result|
-      Photo.save_tagged_photos(tag_result[:name])
+  def self.save_warby_tagged_photos
+    WarbyTag.all.each do |warby_tag|
+      Photo.save_tagged_photos(warby_tag.tag)
     end
   end
 
