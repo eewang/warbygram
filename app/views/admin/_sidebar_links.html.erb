@@ -1,0 +1,54 @@
+<h3>This is where the line graph plotting the warby tags would go.</h3>
+<div class="row">
+<div id="tag-chart" style="height: 250px;"></div>
+<div id="area-example" style="height: 250px;"></div>
+<div id="line-example" style="height: 250px;"></div>
+</div>
+<script>
+	new Morris.Donut({
+	  // ID of the element in which to draw the chart.
+	  element: 'tag-chart',
+	  // Chart data records -- each entry in this array corresponds to a point on
+	  // the chart.
+	  data: [
+	    { label: '#warbyparker', value: 22133 },
+	    { label: '#warbyxstandard', value: 1198 },
+	    { label: '#warbywalk', value: 673 },
+	    { label: '#warby', value: 570 },
+	    { label: '#warby', value: 570 },
+	    { label: '#warbyparkers', value: 420 }
+	  ],
+	});
+
+	new Morris.Area({
+	  element: 'area-example',
+	  data: [
+	    { y: '2006', a: 100, b: 90 },
+	    { y: '2007', a: 75,  b: 65 },
+	    { y: '2008', a: 50,  b: 40 },
+	    { y: '2009', a: 75,  b: 65 },
+	    { y: '2010', a: 50,  b: 40 },
+	    { y: '2011', a: 75,  b: 65 },
+	    { y: '2012', a: 100, b: 90 }
+	  ],
+	  xkey: 'y',
+	  ykeys: ['a', 'b'],
+	  labels: ['Series A', 'Series B']
+	});
+
+	new Morris.Line({
+	  element: 'line-example',
+	  data: [
+	    { y: '2006', a: 100, b: 90 },
+	    { y: '2007', a: 75,  b: 65 },
+	    { y: '2008', a: 50,  b: 40 },
+	    { y: '2009', a: 75,  b: 65 },
+	    { y: '2010', a: 50,  b: 40 },
+	    { y: '2011', a: 75,  b: 65 },
+	    { y: '2012', a: 100, b: 90 }
+	  ],
+	  xkey: 'y',
+	  ykeys: ['a', 'b'],
+	  labels: ['Series A', 'Series B']
+	});
+</script>

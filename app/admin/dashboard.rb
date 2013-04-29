@@ -13,6 +13,19 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
+        panel "Tag chart" do
+          div do
+            render('/admin/sidebar_links', :model => 'Glasses')
+          end
+        end
+      end
+
+
+    end # columns
+
+    columns do
+
+      column do
         panel "Last 10 Frame Styles Recently Updated" do
           table_for Glasses.order('updated_at desc').limit(10) do
             column("Styles")     {|glasses| link_to(glasses.name, admin_glass_path(glasses)) } 
