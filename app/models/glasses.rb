@@ -1,5 +1,5 @@
 class Glasses < ActiveRecord::Base
-  attr_accessible :name, :type, :gender, :image, :style, :color, :collection, :optical, :sku, :male, :female, :active
+  attr_accessible :name, :image, :color, :collection, :optical, :sku, :male, :female, :active
   require 'nokogiri'
   require 'open-uri'
 
