@@ -8,6 +8,8 @@ class Photo < ActiveRecord::Base
 
   include Saveable::InstanceMethods
 
+  WARBY_TAGS = ["warby", "warbyparker"]
+
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
     photos.each do |photo|
@@ -33,7 +35,6 @@ class Photo < ActiveRecord::Base
   def self.save_tagged_photos(instagram_tag)
     photos = InstagramWrapper.new.tag_recent_media({:tag => instagram_tag})
     photos.each do |photo|
-      # Creating a photo and associating the Instagram image properties
       p = Photo.where(:instagram_id => photo.id).first_or_create
       p.caption = photo.caption.text if photo.caption
       p.std_res_image_url = photo.images.standard_resolution.url
@@ -49,6 +50,23 @@ class Photo < ActiveRecord::Base
       p.save_user(photo)
       p.save_likes(photo)
       p.save
+    end
+  end
+
+  def self.get_warby_tag_metadata
+    WARBY_TAGS.each do |tag|
+      tag_results = InstagramWrapper.new.tag_search(:tag => tag)
+      tag_results.each do |tag_result|
+        item = WarbyTag.where(:tag => tag_result[:name]).first_or_create
+        item.count = tag_result[:media_count]
+        item.save
+      end
+    end
+  end
+
+  def self.save_warby_tagged_photos
+    WarbyTag.all.each do |warby_tag|
+      Photo.save_tagged_photos(warby_tag.tag)
     end
   end
 
