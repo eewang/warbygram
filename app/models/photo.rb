@@ -109,4 +109,8 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def address
+    # Use Geocoder to get address from a coordinate set
+  end
+
 end
