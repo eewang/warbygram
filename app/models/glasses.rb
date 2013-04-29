@@ -3,8 +3,8 @@ class Glasses < ActiveRecord::Base
   require 'nokogiri'
   require 'open-uri'
   scope :optical, where(:optical => true)
-  scope :sunglasses, where(:optical => false)
-
+  scope :sunwear, where(:optical => false)
+  scope :all, where(:optical => (true || false))
   def self.scrape_glasses(url)
   	doc = Nokogiri::HTML(open(url))
 
