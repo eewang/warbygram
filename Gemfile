@@ -27,6 +27,7 @@ gem 'thin'
 gem 'instagram'
 gem 'figaro'
 gem 'twitter-bootstrap-rails'
+gem 'whenever'
 
 gem 'nokogiri'
 
