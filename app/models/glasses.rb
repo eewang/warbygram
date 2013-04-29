@@ -2,6 +2,8 @@ class Glasses < ActiveRecord::Base
   attr_accessible :name, :image, :color, :collection, :optical, :sku, :male, :female, :active
   require 'nokogiri'
   require 'open-uri'
+  scope :optical, where(:optical => true)
+  scope :sunglasses, where(:optical => false)
 
   def self.scrape_glasses(url)
   	doc = Nokogiri::HTML(open(url))

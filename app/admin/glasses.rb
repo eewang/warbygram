@@ -1,4 +1,6 @@
 ActiveAdmin.register Glasses do
+	scope :optical
+	scope :sunglasses
 	index do
 		column :id
 		column "Style", :name
