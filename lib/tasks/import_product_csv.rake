@@ -9,10 +9,7 @@ task :import => :environment do
 		collection = row[:collection]
 		optical = row[:optical]
 		sku = row[:sku]
-	
-	# remove style (the same as name) from activerecord
-	# remove 'gender' column, add male and female column
-	
+
 		if row[:male] == 1
 
 			# i want to set male columns set to 1 to be marked 'male'
