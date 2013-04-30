@@ -1,6 +1,10 @@
 RailsAngular::Application.routes.draw do
 
   root :to => 'photos#index'
+
+  get 'comments' => 'comments#index'
+  get 'comments/:id' => 'comments#show'
+
   
   resources :photos
   resources :glasses

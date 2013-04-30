@@ -10,17 +10,6 @@ PhotoApp.factory('Photo', function($resource){
   });
 });
 
-function FirstCtrl($scope, Data){
-  $scope.data = Data;
-}
-
-function SecondCtrl($scope, Data){
-  $scope.data = Data;
-  $scope.reverseMessage = function(message){
-    return message.split("").reverse().join("");
-  };
-}
-
 function PhotoCtrl($scope, Photo){
   $scope.photos = Photo.query();
 
