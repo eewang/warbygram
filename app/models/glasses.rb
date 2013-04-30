@@ -51,23 +51,21 @@ class Glasses < ActiveRecord::Base
     # convert the glasses name into a regular expression to search the tag list, captions and comments for
   end
 
-  def get_tag_variations
-    ["upcase", "downcase", "capitalize"].collect do |variant|
-      self.name.send(variant)
-    end
-  end
+  # def get_tag_variations
+  #   ["upcase", "downcase", "capitalize"].collect do |variant|
+  #     self.name.send(variant)
+  #   end
+  # end
 
   def comment_search_for_product
     comments = []
-    self.get_tag_variations.each do |tag|
-      tag_regexp = /#{tag}/
-      comments << Comment.all.collect do |comment|
-        if comment.comment =~ tag_regexp
-          { :comment_id => comment.id, 
-            :photo_id => comment.photo_id, 
-            :tag => tag, 
-            :comment => comment.comment}
-        end
+    tag_regexp = /#{self.name}/i
+    comments << Comment.all.collect do |comment|
+      if comment.comment =~ tag_regexp
+        { :comment_id => comment.id, 
+          :photo_id => comment.photo_id, 
+          :tag => self.name, 
+          :comment => comment.comment}
       end
     end
     comments.flatten!.delete_if { |item| item.nil? }
@@ -80,6 +78,7 @@ class Glasses < ActiveRecord::Base
       array[glasses.index(glass)] ||= glass.comment_search_for_product
     end
     array.delete_if { |item| item.empty? }
+    binding.pry
   end
 
   def self.comments_metadata
@@ -88,13 +87,12 @@ class Glasses < ActiveRecord::Base
     array = unique_glasses.collect do |item|
       {:tag => item[:tag], :count => glasses.count { |i| i[:tag] == item[:tag] }}
     end
-    binding.pry
   end
 
   def caption_search_for_product
     photos = []
     self.get_tag_variations.each do |tag|
-      tag_regexp = /#{tag}/
+      tag_regexp = /#{tag}/i
       photos << Photo.all.collect do |photo| 
         if photo.caption =~ tag_regexp 
           {:photo_id => photo.id, :tag => tag, :caption => photo.caption}

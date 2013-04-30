@@ -119,4 +119,13 @@ class Photo < ActiveRecord::Base
     Photo.all.collect { |photo| photo unless photo.latitude.nil? }.delete_if { |item| item.nil? }
   end
 
+  def self.caption_search(query)
+    regexp = /#{query}/i
+    results = Photo.all.collect { |photo|
+      if photo.caption =~ regexp
+        {:photo_id => photo.id, :caption => photo.caption}
+      end
+      }.delete_if { |i| i.nil? }
+  end
+
 end
