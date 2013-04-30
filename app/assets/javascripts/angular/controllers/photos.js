@@ -10,6 +10,21 @@ PhotoApp.factory('Photo', function($resource){
   });
 });
 
+PhotoApp.factory('Comment', function($resource){
+  return $resource('comments.json', {}, {
+    query: {method: 'GET', params: {commentId: 'comments'}, isArray: true}
+  });
+});
+
+function CommentCtrl($scope, Comment){
+  $scope.comments = Comment.query();
+
+  $scope.getComment = function(number){
+    return $scope.comments[number]
+  }
+
+}
+
 function PhotoCtrl($scope, Photo){
   $scope.photos = Photo.query();
 
