@@ -7,11 +7,13 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 
+gem 'activeadmin'
+
+gem 'sass-rails',   '~> 3.2.3'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -31,6 +33,11 @@ gem 'whenever'
 gem 'geocoder'
 
 gem 'nokogiri'
+
+group :development do
+  gem 'better_errors',     '~> 0.8.0' # Web UI to debug exceptions. Go to /__better_errors to access the latest one
+  gem 'binding_of_caller', '~> 0.7.1' # Retrieve the binding of a method's caller in MRI Ruby >= 1.9.2
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
