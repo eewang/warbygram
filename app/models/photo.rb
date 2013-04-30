@@ -110,7 +110,13 @@ class Photo < ActiveRecord::Base
   end
 
   def address
-    # Use Geocoder to get address from a coordinate set
+    if self.latitude
+      Geocoder.search([self.latitude, self.longitude])[0].address
+    end
+  end
+
+  def self.geotagged
+    Photo.all.collect { |photo| photo unless photo.latitude.nil? }.delete_if { |item| item.nil? }
   end
 
 end

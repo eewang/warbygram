@@ -57,18 +57,51 @@ class Glasses < ActiveRecord::Base
     end
   end
 
+  def comment_search_for_product
+    comments = []
+    self.get_tag_variations.each do |tag|
+      tag_regexp = /#{tag}/
+      comments << Comment.all.collect do |comment|
+        if comment.comment =~ tag_regexp
+          { :comment_id => comment.id, 
+            :photo_id => comment.photo_id, 
+            :tag => tag, 
+            :comment => comment.comment}
+        end
+      end
+    end
+    comments.flatten!.delete_if { |item| item.nil? }
+  end
+
+  def self.search_all_comments_for_product
+    array = []
+    glasses = Glasses.all
+    glasses.collect do |glass|
+      array[glasses.index(glass)] ||= glass.comment_search_for_product
+    end
+    array.delete_if { |item| item.empty? }
+  end
+
+  def self.comments_metadata
+    glasses = Glasses.search_all_comments_for_product.flatten
+    unique_glasses = glasses.uniq { |c| c[:tag] }
+    array = unique_glasses.collect do |item|
+      {:tag => item[:tag], :count => glasses.count { |i| i[:tag] == item[:tag] }}
+    end
+    binding.pry
+  end
+
   def caption_search_for_product
     photos = []
     self.get_tag_variations.each do |tag|
       tag_regexp = /#{tag}/
       photos << Photo.all.collect do |photo| 
         if photo.caption =~ tag_regexp 
-          [photo.id, tag, photo.caption]
+          {:photo_id => photo.id, :tag => tag, :caption => photo.caption}
         end
       end
     end
     photos.flatten!.delete_if { |item| item.nil? }
-    photos
   end
 
   def self.search_all_captions_for_product
