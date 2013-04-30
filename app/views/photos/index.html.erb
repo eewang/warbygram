@@ -2,20 +2,6 @@
 
 <div ng-app = "PhotoApp">
 
-  <div ng-controller="FirstCtrl">
-    <input ng-model="data.message">
-    <h3>{{data.message}}</h3>
-  </div>
-  <br>
-  <div ng-controller="SecondCtrl">
-    <input ng-model="data.message">
-    <h3>{{reverseMessage(data.message)}}</h3>
-  </div>
-
-  <br>
-  <hr>
-  <br>
-
   <div ng-controller="PhotoCtrl" class="photo_set">
 
     <div class="search">
@@ -27,14 +13,8 @@
       <h5>There are {{getTotalPhotos()}} photos in this collection</h5>
     </div>
 
-    <div class="detail">
-      <p>{{photo.selected}} hello</p>
-    </div>
-
     <div class="main"> 
       <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
-        <button ng-click="remove(photo)">Remove</button>
-        <button ng-click="select(photo)">Detail View</button>
         <p>User: {{photo.instagram_user_id}}</p>
         <p>Caption: {{photo.caption}}</p>
         <p>Filter: {{photo.filter}}</p>

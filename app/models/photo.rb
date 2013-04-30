@@ -109,4 +109,23 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def address
+    if self.latitude
+      Geocoder.search([self.latitude, self.longitude])[0].address
+    end
+  end
+
+  def self.geotagged
+    Photo.all.collect { |photo| photo unless photo.latitude.nil? }.delete_if { |item| item.nil? }
+  end
+
+  def self.caption_search(query)
+    regexp = /#{query}/i
+    results = Photo.all.collect { |photo|
+      if photo.caption =~ regexp
+        {:photo_id => photo.id, :caption => photo.caption}
+      end
+      }.delete_if { |i| i.nil? }
+  end
+
 end

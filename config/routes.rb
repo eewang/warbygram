@@ -1,15 +1,13 @@
 RailsAngular::Application.routes.draw do
+
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config
 
-  get "glasses/index"
-
-  resources :photos
-
   root :to => 'photos#index'
-
-  get "photo/index"
+  
+  resources :photos
+  resources :glasses
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
