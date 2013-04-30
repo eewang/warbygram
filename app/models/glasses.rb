@@ -32,4 +32,91 @@ class Glasses < ActiveRecord::Base
   	end
   end
 
+  def self.check_for_tags
+    tag_array = Glasses.all.collect do |g|
+      [g.name, g.tag_count]
+    end
+  end
+
+  def tag_count
+    possible_tags = self.get_tag_variations
+    possible_tags.collect do |tag|
+      tag_name = Tag.where(:name => tag).first
+      tag_count = tag_name ? tag_name.photos.uniq.count : 0
+      [tag, tag_count]
+    end
+  end
+
+  def reg_exp_search
+    # convert the glasses name into a regular expression to search the tag list, captions and comments for
+  end
+
+  # def get_tag_variations
+  #   ["upcase", "downcase", "capitalize"].collect do |variant|
+  #     self.name.send(variant)
+  #   end
+  # end
+
+  def comment_search_for_product
+    comments = []
+    tag_regexp = /#{self.name}/i
+    comments << Comment.all.collect do |comment|
+      if comment.comment =~ tag_regexp
+        { :comment_id => comment.id, 
+          :photo_id => comment.photo_id, 
+          :tag => self.name, 
+          :comment => comment.comment}
+      end
+    end
+    comments.flatten!.delete_if { |item| item.nil? }
+  end
+
+  def self.search_all_comments_for_product
+    array = []
+    glasses = Glasses.all
+    glasses.collect do |glass|
+      array[glasses.index(glass)] ||= glass.comment_search_for_product
+    end
+    array.delete_if { |item| item.empty? }
+    binding.pry
+  end
+
+  def self.comments_metadata
+    glasses = Glasses.search_all_comments_for_product.flatten
+    unique_glasses = glasses.uniq { |c| c[:tag] }
+    array = unique_glasses.collect do |item|
+      {:tag => item[:tag], :count => glasses.count { |i| i[:tag] == item[:tag] }}
+    end
+  end
+
+  def caption_search_for_product
+    photos = []
+    self.get_tag_variations.each do |tag|
+      tag_regexp = /#{tag}/i
+      photos << Photo.all.collect do |photo| 
+        if photo.caption =~ tag_regexp 
+          {:photo_id => photo.id, :tag => tag, :caption => photo.caption}
+        end
+      end
+    end
+    photos.flatten!.delete_if { |item| item.nil? }
+  end
+
+  def self.search_all_captions_for_product
+    array = []
+    glasses = Glasses.all
+    glasses.collect do |glass|
+      array[glasses.index(glass)] ||= glass.caption_search_for_product
+    end
+    array.delete_if { |item| item.empty? }
+  end
+
+  def tag_exists?
+    tag_check = self.name
+    all_tags = Tag.all.collect { |t| t.name }
+    if all_tags.include?(tag_check.downcase)
+      return true
+    end
+  end
+
 end

@@ -28,6 +28,7 @@ gem 'instagram'
 gem 'figaro'
 gem 'twitter-bootstrap-rails'
 gem 'whenever'
+gem 'geocoder'
 
 gem 'nokogiri'
 
