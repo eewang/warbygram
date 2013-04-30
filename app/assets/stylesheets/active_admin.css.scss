@@ -10,7 +10,7 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
-
+@import "grid";
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
@@ -29,3 +29,51 @@
 // .other_namespace    applies to a custom namespace named other (eg: /other)
 .morris-hover{position:absolute;z-index:1000;}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255, 255, 255, 0.8);border:solid 2px rgba(230, 230, 230, 0.8);font-family:sans-serif;font-size:12px;text-align:center;}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0;}
 .morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0;}
+/* fonts */
+div.jqcloud {
+  font-family: "Helvetica Neue", "Arial", sans-serif;
+  font-size: 10px;
+  line-height: normal;
+}
+
+div.jqcloud a {
+  font-size: inherit;
+  text-decoration: none;
+}
+
+div.jqcloud span.w10 { font-size: 550%; }
+div.jqcloud span.w9 { font-size: 500%; }
+div.jqcloud span.w8 { font-size: 450%; }
+div.jqcloud span.w7 { font-size: 400%; }
+div.jqcloud span.w6 { font-size: 350%; }
+div.jqcloud span.w5 { font-size: 300%; }
+div.jqcloud span.w4 { font-size: 250%; }
+div.jqcloud span.w3 { font-size: 200%; }
+div.jqcloud span.w2 { font-size: 150%; }
+div.jqcloud span.w1 { font-size: 100%; }
+
+/* colors */
+
+div.jqcloud { color: #09f; }
+div.jqcloud a { color: inherit; }
+div.jqcloud a:hover { color: #A3654D; }
+div.jqcloud a:hover { color: #A3654D; }
+div.jqcloud span.w10 { color: #F4645D; }
+div.jqcloud span.w9 { color: #724E3B; }
+div.jqcloud span.w8 { color: #A3654D; }
+div.jqcloud span.w7 { color: #F1A991; }
+div.jqcloud span.w6 { color: #ACC9D1; }
+div.jqcloud span.w5 { color: #A29378; }
+div.jqcloud span.w4 { color: #724E3B; }
+div.jqcloud span.w3 { color: #A3654D; }
+div.jqcloud span.w2 { color: #F4645D; }
+div.jqcloud span.w1 { color: #A3654D; }
+
+/* layout */
+
+div.jqcloud {
+  overflow: hidden;
+  position: relative;
+}
+
+div.jqcloud span { padding: 0; }
