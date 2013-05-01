@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   respond_to :json, :html
 
   def index
-    respond_with Photo.order("photo_taken_at_time DESC")
+    respond_with Photo.order("photo_taken_at_time DESC")[0..25]
   end
 
   def show
