@@ -16,6 +16,7 @@
     <div class="main"> 
       <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
         <p>User: {{photo.instagram_user_id}}</p>
+        <p>Photo Date: {{photo.photo_taken_at_time}}</p>
         <p>Caption: {{photo.caption}}</p>
         <p>Filter: {{photo.filter}}</p>
         <p>Lat: {{photo.latitude}}</p>
