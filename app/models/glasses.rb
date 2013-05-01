@@ -53,11 +53,11 @@ class Glasses < ActiveRecord::Base
     # convert the glasses name into a regular expression to search the tag list, captions and comments for
   end
 
-  # def get_tag_variations
-  #   ["upcase", "downcase", "capitalize"].collect do |variant|
-  #     self.name.send(variant)
-  #   end
-  # end
+  def get_tag_variations
+    ["upcase", "downcase", "capitalize"].collect do |variant|
+      self.name.send(variant)
+    end
+  end
 
   def comment_search_for_product
     comments = []
@@ -80,7 +80,6 @@ class Glasses < ActiveRecord::Base
       array[glasses.index(glass)] ||= glass.comment_search_for_product
     end
     array.delete_if { |item| item.empty? }
-    binding.pry
   end
 
   def self.comments_metadata

@@ -22,10 +22,14 @@
 set :environment, "development"
 set :output, {:error => "log/cron_error_log.log", :standard => "log/cron_log.log"}
 
-every 12.hours do
-  rake "warby:photos"
+every 1.minute do
+  rake "warby:some_photos"
 end
 
-every 1.day, :at => '6:30 am' do
+every 12.hours do
+  rake "warby:all_photos"
+end
+
+every 24.day do
   rake "warby:tags"
 end

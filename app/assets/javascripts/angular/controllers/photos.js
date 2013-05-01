@@ -10,15 +10,19 @@ PhotoApp.factory('Photo', function($resource){
   });
 });
 
-function FirstCtrl($scope, Data){
-  $scope.data = Data;
-}
+PhotoApp.factory('Comment', function($resource){
+  return $resource('comments.json', {}, {
+    query: {method: 'GET', params: {commentId: 'comments'}, isArray: true}
+  });
+});
 
-function SecondCtrl($scope, Data){
-  $scope.data = Data;
-  $scope.reverseMessage = function(message){
-    return message.split("").reverse().join("");
-  };
+function CommentCtrl($scope, Comment){
+  $scope.comments = Comment.query();
+
+  $scope.getComment = function(number){
+    return $scope.comments[number]
+  }
+
 }
 
 function PhotoCtrl($scope, Photo){

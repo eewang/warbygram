@@ -43,6 +43,10 @@ ActiveAdmin.register_page "Dashboard" do
         end
       end
 
+      column do
+        panel "new column"
+      end
+
     end # columns
 
     # Here is an example of a simple dashboard with columns and panels.

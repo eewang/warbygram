@@ -5,6 +5,10 @@ RailsAngular::Application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
 
   root :to => 'photos#index'
+
+  get 'comments' => 'comments#index'
+  get 'comments/:id' => 'comments#show'
+
   
   resources :photos
   resources :glasses
