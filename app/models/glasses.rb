@@ -4,7 +4,7 @@ class Glasses < ActiveRecord::Base
   require 'open-uri'
   scope :optical, where(:optical => true)
   scope :sunwear, where(:optical => false)
-  scope :all, where(:optical => (true || false))
+  # scope :all, where(:optical => (true || false))
   def self.scrape_glasses(url)
   	doc = Nokogiri::HTML(open(url))
 
@@ -49,14 +49,14 @@ class Glasses < ActiveRecord::Base
     end
   end
 
-  def reg_exp_search
-    # convert the glasses name into a regular expression to search the tag list, captions and comments for
-  end
+  # def get_tag_variations
+  #   ["upcase", "downcase", "capitalize"].collect do |variant|
+  #     self.name.send(variant)
+  #   end
+  # end
 
-  def get_tag_variations
-    ["upcase", "downcase", "capitalize"].collect do |variant|
-      self.name.send(variant)
-    end
+  def self.unique_glasses
+    Glasses.all.uniq { |g| g.name }
   end
 
   def comment_search_for_product
@@ -73,11 +73,31 @@ class Glasses < ActiveRecord::Base
     comments.flatten!.delete_if { |item| item.nil? }
   end
 
+  def caption_search_for_product
+    photos = []
+    tag_regexp = /#{self.name}/i
+    photos << Photo.all.collect do |photo| 
+      if photo.caption =~ tag_regexp 
+        {:photo_id => photo.id, :tag => self.name, :caption => photo.caption}
+      end
+    end
+    photos.flatten!.delete_if { |item| item.nil? }
+  end
+
   def self.search_all_comments_for_product
     array = []
-    glasses = Glasses.all
+    glasses = Glasses.unique_glasses
     glasses.collect do |glass|
       array[glasses.index(glass)] ||= glass.comment_search_for_product
+    end
+    array.delete_if { |item| item.empty? }
+  end
+
+  def self.search_all_captions_for_product
+    array = []
+    glasses = Glasses.unique_glasses
+    glasses.collect do |glass|
+      array[glasses.index(glass)] ||= glass.caption_search_for_product
     end
     array.delete_if { |item| item.empty? }
   end
@@ -90,26 +110,12 @@ class Glasses < ActiveRecord::Base
     end
   end
 
-  def caption_search_for_product
-    photos = []
-    self.get_tag_variations.each do |tag|
-      tag_regexp = /#{tag}/i
-      photos << Photo.all.collect do |photo| 
-        if photo.caption =~ tag_regexp 
-          {:photo_id => photo.id, :tag => tag, :caption => photo.caption}
-        end
-      end
+  def self.captions_metadata
+    glasses = Glasses.search_all_captions_for_product.flatten
+    unique_glasses = glasses.uniq { |c| c[:tag] }
+    array = unique_glasses.collect do |item|
+      {:tag => item[:tag], :count => glasses.count { |i| i[:tag] == item[:tag] }}
     end
-    photos.flatten!.delete_if { |item| item.nil? }
-  end
-
-  def self.search_all_captions_for_product
-    array = []
-    glasses = Glasses.all
-    glasses.collect do |glass|
-      array[glasses.index(glass)] ||= glass.caption_search_for_product
-    end
-    array.delete_if { |item| item.empty? }
   end
 
   def tag_exists?

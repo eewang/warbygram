@@ -13,13 +13,27 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
-        panel "Tag chart" do
-          div do
-            render('/admin/sidebar_links', :model => 'Glasses')
+        panel "Tag Map" do
+          div do 
+            render(:partial => '/admin/photo_map', :locals => 
+              {:start_center => Geocoder.coordinates("188 Suffolk Street, New York NY"),
+              :map_data => Photo.get_photos_with_location}
+              )
           end
         end
       end
 
+    end
+
+    columns do
+
+      column do
+        panel "Tag chart" do
+          div do
+            render(:partial => '/admin/sidebar_links', :locals => {:frames_data => Glasses.comments_metadata})
+          end
+        end
+      end
 
     end # columns
 
@@ -41,10 +55,6 @@ ActiveAdmin.register_page "Dashboard" do
             column("Number of Tags")    {|warby_tags| number_with_delimiter(warby_tags.count)               }
           end
         end
-      end
-
-      column do
-        panel "new column"
       end
 
     end # columns

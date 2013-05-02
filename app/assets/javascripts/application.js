@@ -14,6 +14,6 @@
 //= require jquery_ujs
 //= require angular.min
 //= require jqcloud
-//= require angle-up
-//= require_tree ./angular
 //= require_tree .
+//= require_tree ./angular
+
