@@ -5,7 +5,9 @@ $(function(){
   faye.subscribe('/glasses/public', function(data){
     alert(data);
   });
+  
 });
+
 </script>
 
 <h1>Warby Instagram Photos</h1>
@@ -22,6 +24,8 @@ $(function(){
 
       <h5>There are {{getTotalPhotos()}} photos in this collection</h5>
     </div>
+
+<!--     <div>{{getComments()}}</div> -->
 
     <div class="main"> 
       <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
