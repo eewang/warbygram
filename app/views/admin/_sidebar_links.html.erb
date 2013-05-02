@@ -1,107 +1,126 @@
 <section>
-	<h3>Playing with different graphs</h3>
+	<h2>Playing with different graphs</h2>
 	<div class="row">
+
+	<h4>Warby-related Tags</h4>
 	<div class="grid-6" id="tag-chart" style="height: 250px;"></div>
-	<div class="grid-6" id="wordcloud" style="width: 550px; height: 350px; position: relative;"></div>
+	<div class="grid-6" id="tag-wordcloud" style="width: 550px; height: 350px; position: relative;"></div>	
+
+	<h4>Warby Frames</h4>
+	<div class="grid-6" id="frame-chart" style="height: 250px;"></div>
+	<div class="grid-6" id="frame-wordcloud" style="width: 550px; height: 350px; position: relative;"></div>
+
 	</div>
+	<h4>Captions Chart (Frames)</h4>
+	<div class="grid-12" id="caption-bar-chart" style="height: 250px;"></div>
+	<h4>Comments Chart (Frames)</h4>
+	<div class="grid-12" id="comment-bar-chart" style="height: 250px;"></div>
 	<div class="grid-12" id="area-example" style="height: 250px;"></div>
-	<div class="grid-12" id="line-example" style="height: 250px;"></div>
 </section>
 <script>
 
-	var frames_data = <%= frames_data.collect { |i| [i[:tag], i[:count]] } %>
-	console.log(frames_data)
-
-	new Morris.Donut({
-	  // ID of the element in which to draw the chart.
-	  element: 'tag-chart',
-	  // Chart data records -- each entry in this array corresponds to a point on
-	  // the chart.
-	  data: [
-	    { label: '#warbyparker', value: 22133 },
-	    { label: '#warbyxstandard', value: 1198 },
-	    { label: '#warbywalk', value: 673 },
-	    { label: '#warby', value: 570 },
-	    { label: '#warby', value: 570 },
-	    { label: '#warbyparkers', value: 420 }
-	  ],
-	  // formatter: function(y, data) {return '#' + y}
-	  colors: ['#F4645D', '#724E3B', '#A3654D', '#F1A991', '#ACC9D1', '#A29378'],
-	});
-
 	$(document).ready(function() {
-   $("#wordcloud").jQCloud(word_list);
+
+		$.get('warby_related_tags', function(ajax_data){
+
+			var tag_data = [];
+			var tag_list = [];
+
+			for(var i = 0; i < ajax_data.length; i++) {
+				tag_data.push({ label: ajax_data[i].tag, value: ajax_data[i].count });
+				tag_list.push({ text: ajax_data[i].tag, weight: ajax_data[i].count });
+			}
+
+			new Morris.Donut({
+			  element: 'tag-chart',
+			  data: tag_data,
+			  colors: ['#F4645D', '#724E3B', '#A3654D', '#F1A991', '#ACC9D1', '#A29378'],
+			});
+
+			$("#tag-wordcloud").jQCloud(tag_list);
+
+		});
+
+  	$.get('caption_data', function(ajax_data){
+
+			var caption_data_display = [];
+			var frame_data = [];
+  		var frame_caption_list = [];
+
+  		for(var i = 0; i < ajax_data.length; i++) {
+  			frame_caption_list.push({ text: ajax_data[i].tag, weight: ajax_data[i].count });
+	  		caption_data_display.push({ y: ajax_data[i].tag, a: ajax_data[i].count });
+	  		frame_data.push({ label: ajax_data[i].tag, value: ajax_data[i].count });
+  		}
+
+  		new Morris.Donut({
+  			element: 'frame-chart',
+  			data: frame_data,
+			  colors: ['#F4645D', '#724E3B', '#A3654D', '#F1A991', '#ACC9D1', '#A29378'],
+  		});
+
+	  	$("#frame-wordcloud").jQCloud(frame_caption_list);
+
+			new Morris.Bar({
+			  element: 'caption-bar-chart',
+			  data: caption_data_display,
+			  xkey: 'y',
+			  ykeys: ['a'],
+			  labels: ['Series A']
+			});
+
+		})
+
+
 });
-
-	// Ajax request to get tag data
-
-	// jQcloud
-  var word_list = [
-    {text: "#warby", weight: 135},
-    { text: '#warbyparker', weight: 133 },
-    { text: '#warbyxstandard', weight: 1198 },
-    { text: '#warbywalk', weight: 673 },
-    { text: '#warby', weight: 570 },
-    { text: '#warby', weight: 570 },
-    { text: '#warbyparkers', weight: 420 }
-    // ...as many words as you want
-	];
-
-	new Morris.Area({
-	  element: 'area-example',
-	  data: [
-	    { y: '2006', a: 100, b: 90 },
-	    { y: '2007', a: 500,  b: 65 },
-	    { y: '2008', a: 50,  b: 40 },
-	    { y: '2009', a: 1000,  b: 65 },
-	    { y: '2010', a: 50,  b: 40 },
-	    { y: '2011', a: 75,  b: 65 },
-	    { y: '2012', a: 100, b: 90 }
-	  ],
-	  xkey: 'y',
-	  ykeys: ['a', 'b'],
-	  labels: ['Series A', 'Series B']
-	});
 
 	$.get('comment_data', function(ajax_data){
 
-		var data_to_display = [];
+		var comment_data_display = [];
+		// var word_cloud = [];
 
   	for(var i = 0; i < ajax_data.length; i ++) {
-  		data_to_display.push({ y: ajax_data[i].tag, a: ajax_data[i].count })
+  		comment_data_display.push({ y: ajax_data[i].tag, a: ajax_data[i].count })
+  		// word_cloud.push({ text: ajax_data})
   	}
 
-  	// console.log(data_to_display);
-
-  	var test = [
-  		{ y: "nyc", a: 1},
-  		{ y: "sf", a: 2},
-  		{ y: "chi", a: 5}
-  	]
+	 // 	// jQcloud
+	 //  var word_list = [
+	 //    {text: "#warby", weight: 135},
+	 //    { text: '#warbyparker', weight: 133 },
+	 //    { text: '#warbyxstandard', weight: 1198 },
+	 //    { text: '#warbywalk', weight: 673 },
+	 //    { text: '#warby', weight: 570 },
+	 //    { text: '#warby', weight: 570 },
+	 //    { text: '#warbyparkers', weight: 420 }
+	 //    // ...as many words as you want
+		// ];
 
 		new Morris.Bar({
-		  element: 'line-example',
-		  data: data_to_display[0],
-		  // [
-		  	// $.each(["nyc", "sf", "chi"], function(index, value){
-		  	// 	if(index < 2){
-		  	// 		"{ y: value, a: index},"
-		  	// 	} else {
-		  	// 		"{ y: value, a: index}"
-		  	// 	}
-		  	// })
-		  	// { y: data_to_display[0].y, a: data_to_display[0].a },
-		  	// { y: data_to_display[1].y, a: data_to_display[1].a },
-		  	// { y: data_to_display[2].y, a: data_to_display[2].a },
-		  	// { y: data_to_display[3].y, a: data_to_display[3].a },
-		  	// { y: data_to_display[4].y, a: data_to_display[4].a },
-		  	// { y: data_to_display[5].y, a: data_to_display[5].a }
-		  // ],
+		  element: 'comment-bar-chart',
+		  data: comment_data_display,
 		  xkey: 'y',
 		  ykeys: ['a'],
 		  labels: ['Series A']
 		});
 
 	});
+
+
+	// new Morris.Area({
+	//   element: 'area-example',
+	//   data: [
+	//     { y: '2006', a: 100, b: 90 },
+	//     { y: '2007', a: 500,  b: 65 },
+	//     { y: '2008', a: 50,  b: 40 },
+	//     { y: '2009', a: 1000,  b: 65 },
+	//     { y: '2010', a: 50,  b: 40 },
+	//     { y: '2011', a: 75,  b: 65 },
+	//     { y: '2012', a: 100, b: 90 }
+	//   ],
+	//   xkey: 'y',
+	//   ykeys: ['a', 'b'],
+	//   labels: ['Series A', 'Series B']
+	// });
 
 </script>

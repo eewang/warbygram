@@ -9,7 +9,8 @@ RailsAngular::Application.routes.draw do
   get 'comments' => 'comments#index'
   get 'comments/:id' => 'comments#show'
   get 'comment_data' => 'glasses#comment_data'
-
+  get 'caption_data' => 'glasses#caption_data'
+  get 'warby_related_tags' => 'glasses#warby_related_tags'
   
   resources :photos
   resources :glasses

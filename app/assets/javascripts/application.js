@@ -17,3 +17,10 @@
 //= require angle-up
 //= require_tree ./angular
 //= require_tree .
+
+$(function(){
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  faye.subscribe('/glasses/public', function(data){
+    alert(data);
+  });
+});
