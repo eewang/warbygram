@@ -1,4 +1,6 @@
-var PhotoApp = angular.module('PhotoApp', ['ngResource']);
+
+
+var PhotoApp = angular.module('PhotoApp', ['ngResource', 'components']);
 
 PhotoApp.factory('Data', function(){
   return {message: "I'm data from the PhotoApp"}
@@ -15,6 +17,18 @@ PhotoApp.factory('Comment', function($resource){
     query: {method: 'GET', params: {commentId: 'comments'}, isArray: true}
   });
 });
+
+// PhotoApp.factory('Frames', function($resource){
+//   return $resource('comment_data.json', {}, {
+//     query: {method: 'GET', params: {commentId: 'comments'}, isArray: true}
+//   });
+// });
+
+function FramesCtrl($scope, $http){
+  $scope.test = "hello";
+
+  // $scope.frames = $http.get('/comment_data');
+}
 
 function CommentCtrl($scope, Comment){
   $scope.comments = Comment.query();

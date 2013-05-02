@@ -15,7 +15,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Tag chart" do
           div do
-            render('/admin/sidebar_links', :model => 'Glasses')
+            render(:partial => '/admin/sidebar_links', :locals => {:frames_data => Glasses.comments_metadata})
           end
         end
       end

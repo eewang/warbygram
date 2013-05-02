@@ -8,6 +8,7 @@ RailsAngular::Application.routes.draw do
 
   get 'comments' => 'comments#index'
   get 'comments/:id' => 'comments#show'
+  get 'comment_data' => 'glasses#comment_data'
 
   
   resources :photos
