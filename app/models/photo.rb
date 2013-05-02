@@ -49,6 +49,7 @@ class Photo < ActiveRecord::Base
       p.save_location(photo)
       p.save_user(photo)
       p.save_likes(photo)
+      p.convert_unix_time
       p.save
     end
   end
@@ -126,6 +127,18 @@ class Photo < ActiveRecord::Base
         {:photo_id => photo.id, :caption => photo.caption}
       end
       }.delete_if { |i| i.nil? }
+  end
+
+  def convert_unix_time
+    self.photo_taken_at_time = DateTime.strptime(self.created_time, '%s')
+  end
+
+  def self.get_photos_with_location
+    Photo.all.collect { |item|
+      if item.latitude && item.longitude
+        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
+      end
+    }.delete_if { |item| item.nil? }
   end
 
 end

@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   respond_to :json, :html
 
   def index
-    respond_with Photo.all.shuffle
+    respond_with Photo.order("photo_taken_at_time DESC")[0..24]
   end
 
   def show
