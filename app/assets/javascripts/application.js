@@ -14,13 +14,6 @@
 //= require jquery_ujs
 //= require angular.min
 //= require jqcloud
-//= require angle-up
-//= require_tree ./angular
 //= require_tree .
+//= require_tree ./angular
 
-$(function(){
-  var faye = new Faye.Client('http://localhost:9292/faye');
-  faye.subscribe('/glasses/public', function(data){
-    alert(data);
-  });
-});

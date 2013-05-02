@@ -13,13 +13,27 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
+        panel "Tag Map" do
+          div do 
+            render(:partial => '/admin/photo_map', :locals => 
+              {:start_center => Geocoder.coordinates("188 Suffolk Street, New York NY"),
+              :map_data => Photo.get_photos_with_location}
+              )
+          end
+        end
+      end
+
+    end
+
+    columns do
+
+      column do
         panel "Tag chart" do
           div do
             render(:partial => '/admin/sidebar_links', :locals => {:frames_data => Glasses.comments_metadata})
           end
         end
       end
-
 
     end # columns
 

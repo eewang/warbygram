@@ -1,0 +1,40 @@
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCz6Qb49G27oGFRB1dNvTxM5O6dkFRl11A&sensor=false" %>
+
+<script>
+
+  var start_center = <%= start_center %>
+
+  function initialize(){
+    var mapOptions = {
+      center: new google.maps.LatLng(start_center[0], start_center[1]),
+      zoom: 4,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("map-canvas"),
+      mapOptions);
+
+    <% map_data.each do |item| %>
+
+      var marker = new google.maps.Marker({
+        map: map
+      })
+
+      marker.setPosition(new google.maps.LatLng(
+        <%= item[:latitude] %>,
+        <%= item[:longitude] %>
+        ))
+
+    <% end %>
+
+  }
+
+  google.maps.event.addDomListener(window, 'load', function(){
+
+    initialize();
+
+  });
+
+</script>
+
+<div id="map-canvas" style="width:100em; height:50em;"></div>

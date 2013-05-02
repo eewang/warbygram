@@ -1,4 +1,12 @@
+<script>
+$(function(){
 
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  faye.subscribe('/glasses/public', function(data){
+    alert(data);
+  });
+});
+</script>
 
 <h1>Warby Instagram Photos</h1>
 
@@ -6,7 +14,6 @@
 
   <div ng-controller="PhotoCtrl" class="photo_set">
 
-    <hello name="Eugene" last="Wang"></hello>
     <div class="search">
       <input ng-model="query">
       <h3>Filter Term: {{query}}<h3>
@@ -22,8 +29,6 @@
         <p>Photo Date: {{photo.photo_taken_at_time}}</p>
         <p>Caption: {{photo.caption}}</p>
         <p>Filter: {{photo.filter}}</p>
-        <p>Lat: {{photo.latitude}}</p>
-        <p>Lon: {{photo.longitude}}</p>
         <img src="{{photo.low_res_image_url}}"><br>
       </div>
     </div>
