@@ -133,4 +133,12 @@ class Photo < ActiveRecord::Base
     self.photo_taken_at_time = DateTime.strptime(self.created_time, '%s')
   end
 
+  def self.get_photos_with_location
+    Photo.all.collect { |item|
+      if item.latitude && item.longitude
+        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
+      end
+    }.delete_if { |item| item.nil? }
+  end
+
 end
