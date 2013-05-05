@@ -7,7 +7,7 @@ PhotoApp.factory('Data', function(){
 })
 
 PhotoApp.factory('Photo', function($resource){
-  return $resource('photos.json', {}, {
+  return $resource('photo_feed.json', {}, {
     query: {method: 'GET', params: {photoId: 'photos'}, isArray: true}
   });
 });

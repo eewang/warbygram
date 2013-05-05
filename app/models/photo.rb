@@ -10,6 +10,25 @@ class Photo < ActiveRecord::Base
 
   WARBY_TAGS = ["warby", "warbyparker"]
 
+  def self.photo_feed(number)
+    set = Photo.order("photo_taken_at_time DESC")[0..number-1]
+    photo_feed = set.collect do |item|
+      photo = { :caption => item.caption,
+        :photo => item.low_res_image_url,
+        :photo_taken_at_time => item.photo_taken_at_time,
+        :photo_link => item.link,
+        :user => InstagramUser.find(item.instagram_user_id).user_name
+        }
+      if item.comments.present?
+        photo[:comments] ||= []
+        item.comments.each do |i|
+          photo[:comments] << {:user => InstagramUser.find(i.instagram_user_id).user_name, :comment => i.comment }
+        end
+      end
+      photo
+    end
+  end
+
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
     photos.each do |photo|
