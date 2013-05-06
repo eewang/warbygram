@@ -265,7 +265,6 @@ class Photo < ActiveRecord::Base
         photo
       end
     }.compact!
-    binding.pry
   end
 
 end
