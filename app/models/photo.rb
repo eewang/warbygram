@@ -54,6 +54,43 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def self.check_location(lat, lon, dis)
+    i_photos = InstagramWrapper.new.media_search(
+      {:lat => lat, :lon => lon, :distance => dis, 
+      :min_timestamp => 60.minutes.ago.to_i, :max_timestamp => Time.now.to_i})
+    i_photos.collect! do |i_p| 
+      if !i_p.caption.nil? && i_p.caption.text =~ /@warby/ && i_p.caption.text !~ /#warby/
+        i_p
+      end
+    end
+    i_photos.compact!
+    if i_photos.present?
+      i_photos.each do |photo|
+        p = Photo.where(:instagram_id => photo.id).first_or_create
+        p.caption = photo.caption.text if photo.caption
+        p.std_res_image_url = photo.images.standard_resolution.url
+        p.low_res_image_url = photo.images.low_resolution.url
+        p.thumbnail_image_url = photo.images.thumbnail.url      
+        p.instagram_id = photo.id
+        p.filter = photo.filter
+        p.created_time = photo.created_time
+        p.link = photo.link
+        p.save_tags(photo)
+        p.save_comments(photo)
+        p.save_location(photo)
+        p.save_user(photo)
+        p.save_likes(photo)
+        p.convert_unix_time
+        p.save
+        if p.latitude
+          near_coordinates([p.latitude, p.longitude], 5).each do |photo|
+            Photo.find(photo[:photo]).nearby_count += 1
+          end
+        end
+      end
+    end
+  end
+
   def self.save_instagram_popular_photos
     photos = InstagramWrapper.new.media_popular({})
     photos.each do |photo|
@@ -95,6 +132,11 @@ class Photo < ActiveRecord::Base
       p.save_likes(photo)
       p.convert_unix_time
       p.save
+      if p.latitude
+        near_coordinates([p.latitude, p.longitude], 5).each do |photo|
+          Photo.find(photo[:photo]).nearby_count += 1
+        end
+      end
     end
   end
 
@@ -151,6 +193,7 @@ class Photo < ActiveRecord::Base
       self.location = instagram_photo.location.name
       self.latitude = instagram_photo.location.latitude
       self.longitude = instagram_photo.location.longitude
+      self.nearby_count = Photo.near_coordinates([instagram_photo.location.latitude, instagram_photo.location.longitude], 5).size
     end
   end
 
@@ -170,7 +213,7 @@ class Photo < ActiveRecord::Base
       if photo.caption =~ regexp
         {:photo_id => photo.id, :caption => photo.caption}
       end
-      }.delete_if { |i| i.nil? }
+      }.compact!
   end
 
   def convert_unix_time
@@ -182,7 +225,7 @@ class Photo < ActiveRecord::Base
       if item.latitude && item.longitude
         {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
       end
-    }.delete_if { |item| item.nil? }
+    }.compact!
   end
 
   def self.search_instagram_captions
@@ -195,22 +238,24 @@ class Photo < ActiveRecord::Base
     # If there is any term referenced within the caption, then save the photo
   end
 
-  def self.near_coordinates(coordinates, distance)
+  def self.near_coordinates(coordinates, distance) # distance should be 5 km
     photos_array = get_photos_with_location.collect do |photo|
-      if Photo.find(photo[:photo]).distance_to(coordinates) <= distance
+      if Photo.find(photo[:photo]).distance_to(coordinates, :units => :km) <= distance
         photo
       end
     end
-    photos_array.delete_if { |i| i.nil? }
+    photos_array.compact!
   end
 
   def nearby_photo_count
     latitude ? Photo.near_coordinates([latitude, longitude], 5).size : 0
   end
 
-  def self.nearby_photos_array
-    @@nearby_photos = Photo.get_photos_with_location.collect do |photo|
-      {:photo => photo[:photo], :nearby_count => Photo.find(photo[:photo]).nearby_photo_count}
+  def self.set_nearby_photo_count
+    get_photos_with_location.collect do |photo|
+      photo_update = Photo.find(photo[:photo])
+      photo_update.nearby_count = photo_update.nearby_photo_count
+      photo_update.save
     end
   end
 
@@ -219,7 +264,7 @@ class Photo < ActiveRecord::Base
       if photo.caption =~ /@warby/ && photo.caption !~ /#warby/
         photo
       end
-    }.delete_if { |i| i.nil? }
+    }.compact!
     binding.pry
   end
 
