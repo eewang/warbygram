@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130501145031) do
+ActiveRecord::Schema.define(:version => 20130506032511) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -109,6 +109,8 @@ ActiveRecord::Schema.define(:version => 20130501145031) do
     t.string   "link"
     t.string   "instagram_user_id"
     t.string   "photo_taken_at_time"
+    t.string   "address"
+    t.integer  "nearby_count"
   end
 
   create_table "tags", :force => true do |t|
