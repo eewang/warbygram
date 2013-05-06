@@ -1,14 +1,39 @@
 class Photo < ActiveRecord::Base
-  attr_accessible :caption, :location, :user_name, :std_res_image_url, :low_res_image_url, :thumbnail_image_url, :latitude, :longitude, :instagram_id
+  attr_accessible :caption, :location, :user_name, :std_res_image_url, :low_res_image_url, :thumbnail_image_url, :latitude, :longitude, :instagram_id, :address
+
   has_many :photo_tags
   has_many :tags, :through => :photo_tags
   has_many :comments
   has_many :likes
   belongs_to :instagram_user
 
+  reverse_geocoded_by :latitude, :longitude
+  after_validation :reverse_geocode
+
+  @@nearby_photos = []
+
+  class << self
+    attr_accessor :nearby_photos
+  end
+
   include Saveable::InstanceMethods
 
   WARBY_TAGS = ["warby", "warbyparker"]
+
+  WARBY_LOCATIONS = [
+    "121 Greene Street, New York NY",
+    "295 Lafayette Street, New York NY",
+    "4661 Hollywood Boulevard, Los Angeles CA",
+    "550 South Flower Street, Los Angeles CA",
+    "728 Divisadero Street, San Francisco CA",
+    "116 N 3rd Street, Philadelphia PA",
+    "3 NW 9th Street, Oklahoma City OK",
+    "1804 N Damen Avenue, Chicago IL",
+    "40 Island Avenue, Miami FL",
+    "79 Cannon Street, Charleston SC",
+    "2601 12th Avenue South, Nashville TN",
+    "3100 West Cary Street, Richmond VA"
+  ]
 
   def self.photo_feed(number)
     set = Photo.order("photo_taken_at_time DESC")[0..number-1]
@@ -158,6 +183,44 @@ class Photo < ActiveRecord::Base
         {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
       end
     }.delete_if { |item| item.nil? }
+  end
+
+  def self.search_instagram_captions
+    # Determine the top 10 photo coordinates that have the most photos tagged with something warby-related within 5 km saved in the database
+
+    # Search instagram with these photo coordinates every 6 minutes (i.e., each is searched every hour)
+
+    # With the instagram photo json data that is returned by the Instagram API, search the caption for any references (via regex), but especially @references to warby parker or frames (for frames, use @<frame name>)
+
+    # If there is any term referenced within the caption, then save the photo
+  end
+
+  def self.near_coordinates(coordinates, distance)
+    photos_array = get_photos_with_location.collect do |photo|
+      if Photo.find(photo[:photo]).distance_to(coordinates) <= distance
+        photo
+      end
+    end
+    photos_array.delete_if { |i| i.nil? }
+  end
+
+  def nearby_photo_count
+    latitude ? Photo.near_coordinates([latitude, longitude], 5).size : 0
+  end
+
+  def self.nearby_photos_array
+    @@nearby_photos = Photo.get_photos_with_location.collect do |photo|
+      {:photo => photo[:photo], :nearby_count => Photo.find(photo[:photo]).nearby_photo_count}
+    end
+  end
+
+  def self.check_warby_reference
+    photos = Photo.all.collect { |photo|
+      if photo.caption =~ /@warby/ && photo.caption !~ /#warby/
+        photo
+      end
+    }.delete_if { |i| i.nil? }
+    binding.pry
   end
 
 end

@@ -66,18 +66,6 @@ function PhotoCtrl($scope, Photo, $http){
     return "hello this is a test";
   }
 
-  // $scope.changeStyle = function(photo){
-  //   $scope.selected = photo;
-  // }
-
-  // $scope.returnSelectPhoto = function(photo){
-
-  // }
-
-  // $scope.selectPhoto = function(photo) {
-  //   return $scope.selected === photo;
-  // }
-
 }
 
 function PhotoDetailCtrl($scope, Photo){

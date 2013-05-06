@@ -28,6 +28,10 @@
           <%= item[:longitude] %>
           ))
 
+        google.maps.event.addListener(marker, 'click', function(){
+          console.log(<%= "#{item[:latitude]}, #{item[:longitude]}" %>)
+        })
+
       <% end %>
 
     }

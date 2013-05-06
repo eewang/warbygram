@@ -14,4 +14,12 @@ class Comment < ActiveRecord::Base
       }.delete_if { |i| i.nil? }
   end
 
+  def search_for_warby
+    comment =~ /@warby/ && comment !~ /#warby/
+  end
+
+  def self.search_photo_comments_for_warby(photo_id)
+    Photo.find(photo_id).comments.collect { |comment| comment.search_for_warby }.delete_if { |i| i.nil? }
+  end
+
 end
