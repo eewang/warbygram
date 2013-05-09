@@ -6,11 +6,15 @@ class InstagramWrapper
   end
 
   def media_search(options)
-    lat = options[:lat] ? options[:lat] : nil
-    lon = options[:lon] ? options[:lon] : nil
-    dis = options[:distance] ? options[:distance] : 2012
-    Instagram.media_search(lat, lon, :distance => dis)
+    lat = options[:lat]
+    lon = options[:lon]
+    dis = options[:distance] ||= 2012
+    max_time = options[:max_timestamp]
+    min_time = options[:min_timestamp]
+    Instagram.media_search(lat, lon, :distance => dis, :max_timestamp => max_time, :min_timestamp => min_time)
   end
+
+# 40.74451,-73.990131
 
   def media_popular(options)
     Instagram.media_popular(options)

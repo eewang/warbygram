@@ -24,4 +24,17 @@ namespace :warby do
     puts "'Saved some Warby tagged photos' task ran at #{Time.now}; #{photo_count_after - photo_count_before} new photos"
   end
 
+  desc "Get location-based @warby pics"
+  task :get_location_photos => :environment do
+    photo_array = Photo.order(:nearby_count).delete_if { |i| i.nearby_count.nil? }.reverse
+    photo_array.collect! {|item| item if (photo_array.index(item) % (photo_array.size / 10)) == 0 }.compact!
+    photo_array.each do |photo|
+      photo_count_before = Photo.count
+      Photo.check_location(photo.latitude, photo.longitude, 5000)
+      photo_count_after = Photo.count
+      puts "Location checked #{photo_array.index(photo) + 1} of #{photo_array.size} at #{Time.now}. #{photo_count_after - photo_count_before} new photos"
+      sleep 60
+    end
+  end
+
 end
