@@ -1,0 +1,71 @@
+
+<script>
+
+  $(document).ready(function() {
+
+    $.get('/comment_and_caption_data', function(ajax_data){
+
+      var chart_display = [];
+      var donut_display = [];
+      var word_cloud_display = [];
+
+      for(var i = 0; i < ajax_data.length; i ++) {
+        var total_count = ajax_data[i].caption_count + ajax_data[i].comment_count
+
+        chart_display.push({ 
+          y: ajax_data[i].tag, 
+          a: ajax_data[i].caption_count, 
+          b: ajax_data[i].comment_count
+        })
+
+        donut_display.push({
+          label: ajax_data[i].tag,
+          value: total_count
+        })
+
+        word_cloud_display.push({ 
+          text: ajax_data[i].tag, 
+          weight: total_count
+        })
+      }
+
+      new Morris.Donut({
+        element: 'frame-chart',
+        data: donut_display,
+        colors: ['#F4645D', '#724E3B', '#A3654D', '#F1A991', '#ACC9D1', '#A29378'],
+      });
+
+      $("#frame-wordcloud").jQCloud(word_cloud_display);
+
+      new Morris.Bar({
+        element: 'references-bar-chart',
+        data: chart_display,
+        xkey: 'y',
+        ykeys: ['a', 'b'],
+        stacked: true,
+        labels: ['Captions', 'Comments']
+      });
+
+    });
+
+  });
+
+</script>
+
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map-canvas { height: 100% }
+</style>
+
+<section>
+  <div class="row">
+
+  <div class="grid-6" id="frame-chart" style="height: 350px;"></div>
+  <div class="grid-6" id="frame-wordcloud" style="width: 550px; height: 350px; position: relative;"></div>
+
+  <h4>Comments Chart (Frames)</h4>
+  <div class="grid-12" id="references-bar-chart" style="height: 500px;"></div>
+  </div>
+
+</section>

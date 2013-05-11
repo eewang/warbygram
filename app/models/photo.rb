@@ -198,9 +198,7 @@ class Photo < ActiveRecord::Base
   end
 
   def address
-    if self.latitude
-      Geocoder.search([self.latitude, self.longitude])[0].address
-    end
+    Geocoder.search([self.latitude, self.longitude])[0].address if self.latitude
   end
 
   def self.geotagged
@@ -208,7 +206,7 @@ class Photo < ActiveRecord::Base
   end
 
   def self.caption_search(query)
-    regexp = /#{query}/i
+    regexp = /##{query}\s/i
     results = Photo.all.collect { |photo|
       if photo.caption =~ regexp
         {:photo_id => photo.id, :caption => photo.caption}
@@ -226,16 +224,6 @@ class Photo < ActiveRecord::Base
         {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
       end
     }.compact!
-  end
-
-  def self.search_instagram_captions
-    # Determine the top 10 photo coordinates that have the most photos tagged with something warby-related within 5 km saved in the database
-
-    # Search instagram with these photo coordinates every 6 minutes (i.e., each is searched every hour)
-
-    # With the instagram photo json data that is returned by the Instagram API, search the caption for any references (via regex), but especially @references to warby parker or frames (for frames, use @<frame name>)
-
-    # If there is any term referenced within the caption, then save the photo
   end
 
   def self.near_coordinates(coordinates, distance) # distance should be 5 km

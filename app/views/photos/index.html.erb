@@ -1,10 +1,10 @@
 <script>
 $(function(){
 
-  var faye = new Faye.Client('http://localhost:9292/faye');
-  faye.subscribe('/glasses/public', function(data){
-    alert(data);
-  });
+  // var faye = new Faye.Client('http://localhost:9292/faye');
+  // faye.subscribe('/glasses/public', function(data){
+  //   alert(data);
+  // });
   
 });
 
@@ -19,16 +19,13 @@ $(function(){
     <div class="search">
       <input ng-model="query">
       <h3>Filter Term: {{query}}<h3>
-      <input ng-model="stylechoice">
-      <h5>Styleize!: {{stylechoice}}</h5>
-
-      <h5>There are {{getTotalPhotos()}} photos in this collection</h5>
+<!--       <h5>There are {{getTotalPhotos()}} photos in this collection</h5> -->
     </div>
 
 <!--     <div>{{getComments()}}</div> -->
 
     <div class="main"> 
-      <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
+      <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="">
         <p>User: <a href="http://instagram.com/{{photo.user}}" target="_blank">{{photo.user}}</a></p>
         <p>Photo Date: {{photo.photo_taken_at_time}}</p>
         <p>Caption: {{photo.caption}}</p>
