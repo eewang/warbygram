@@ -19,7 +19,7 @@ class GlassesController < ApplicationController
   end
 
   def new
-    # render :text => "testing faye"
+    render :text => "testing faye"
   end
 
 end
