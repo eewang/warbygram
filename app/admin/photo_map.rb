@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Photo Map" do
         panel "Photo Map" do
           div do
             render(:partial => '/admin/photo_map', :locals => 
-              {:start_center => Geocoder.coordinates("188 Suffolk Street, New York NY"),
+              {:start_center => Geocoder.coordinates("Kansas 191, Lebanon KS"),
               :map_data => Photo.get_photos_with_location}
               )          
           end # div

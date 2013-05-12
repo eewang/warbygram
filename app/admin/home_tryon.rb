@@ -7,7 +7,7 @@ ActiveAdmin.register_page "Home Try On" do
       column do 
         panel "Home Try On" do
           div do
-            render :text => "testing"     
+            render :partial => "/admin/home_tryon", :locals => { :home_tryon_photos => Photo.home_tryon }    
           end # div
         end # panel
       end # column

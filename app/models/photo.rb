@@ -272,4 +272,10 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def self.home_tryon
+    home_tryon_photos = Photo.includes(:tags).collect { |p|
+      p if p.tags.collect { |t| t.name }.grep(/hometryon/).present?
+    }.delete_if { |d| d.nil? }
+  end
+
 end
