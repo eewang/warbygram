@@ -4,32 +4,37 @@
 
   var start_center = <%= start_center %>
 
-  function initialize(){
-    var mapOptions = {
-      center: new google.maps.LatLng(start_center[0], start_center[1]),
-      zoom: 4,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    var map = new google.maps.Map(document.getElementById("map-canvas"),
-      mapOptions);
-
-    <% map_data.each do |item| %>
-
-      var marker = new google.maps.Marker({
-        map: map
-      })
-
-      marker.setPosition(new google.maps.LatLng(
-        <%= item[:latitude] %>,
-        <%= item[:longitude] %>
-        ))
-
-    <% end %>
-
-  }
 
   google.maps.event.addDomListener(window, 'load', function(){
+
+    function initialize(){
+      var mapOptions = {
+        center: new google.maps.LatLng(start_center[0], start_center[1]),
+        zoom: 4,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+
+      var map = new google.maps.Map(document.getElementById("map-canvas"),
+        mapOptions);
+
+      <% map_data.each do |item| %>
+
+        var marker = new google.maps.Marker({
+          map: map
+        })
+
+        marker.setPosition(new google.maps.LatLng(
+          <%= item[:latitude] %>,
+          <%= item[:longitude] %>
+          ))
+
+        google.maps.event.addListener(marker, 'click', function(){
+          console.log(<%= "#{item[:latitude]}, #{item[:longitude]}" %>)
+        })
+
+      <% end %>
+
+    }
 
     initialize();
 

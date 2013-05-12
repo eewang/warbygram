@@ -22,7 +22,11 @@
 set :environment, "development"
 set :output, {:error => "log/cron_error_log.log", :standard => "log/cron_log.log"}
 
-every 5.minute do
+every 1.hour do
+  rake "warby:get_location_photos"
+end
+
+every 10.minutes do
   rake "warby:some_photos"
 end
 
