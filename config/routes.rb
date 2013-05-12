@@ -12,6 +12,7 @@ RailsAngular::Application.routes.draw do
   get 'caption_data' => 'glasses#caption_data'
   get 'comment_and_caption_data' => 'glasses#comment_and_caption_data'
   get 'warby_related_tags' => 'glasses#warby_related_tags'
+  get 'top_users' => 'photos#top_users'
   get 'photo_feed' => 'photos#photo_feed'
   
   resources :photos

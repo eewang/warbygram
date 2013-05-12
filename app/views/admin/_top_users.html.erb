@@ -1,0 +1,10 @@
+<% @users.each do |u| %>
+  <div>
+    <h3><%= link_to(u[:user_name], u[:profile], :target => "_blank") %> - <%= u[:photos_taken] %> photos taken</h3>
+    <%= image_tag(u[:profile_pic], :style => "width: 26em;") %>
+    <% get_user_photos(u[:photos]).each do |photo| %>
+      <%= link_to image_tag(photo[0]), photo[1], :target => "_blank" %>
+    <% end %>
+  </div>
+  <br>
+<% end %>

@@ -6,7 +6,9 @@ class Glasses < ActiveRecord::Base
   scope :sunwear, where(:optical => false)
   # scope :all, where(:optical => (true || false))
 
-  
+  SPECIAL_TAGS = {
+    :liv => /liv/i
+  }
 
   def self.scrape_glasses(url)
   	doc = Nokogiri::HTML(open(url))
@@ -122,7 +124,6 @@ class Glasses < ActiveRecord::Base
   end
 
   def self.comment_and_caption_metadata
-    # Return {:tag => "Marshall", :caption_count => 5, :comment_count => 4  }
     glasses = Glasses.group(:name)
     array = glasses.collect do |item|
       { :tag => item.name, 
