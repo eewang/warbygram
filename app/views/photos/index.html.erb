@@ -1,11 +1,12 @@
 <script>
 $(function(){
 
-  // var faye = new Faye.Client('http://localhost:9292/faye');
-  // faye.subscribe('/glasses/public', function(data){
-  //   alert(data);
-  // });
-  
+  var faye = new Faye.Client("<%= ENV['FAYE_SERVER']  + "/faye" %>");
+  faye.subscribe('/photos/new', function(data){
+    console.log(data);
+    // update angular photo controller here
+  }); 
+
 });
 
 </script>
