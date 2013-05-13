@@ -1,6 +1,6 @@
 == Warby Parker + Instagram
 
-Project for [Warby Parker](http://www.warbyparker.com) using Instagram API.
+Project for http://www.warbyparker.com using Instagram API.
 Built primarily on ActiveAdmin.
 
 

@@ -12,6 +12,14 @@ namespace :import do
 			end
 		end
 
+		def optical(glasses)
+			if glasses == "Optical"
+				true
+			else
+				false
+			end
+		end
+
 		glasses = CSV.open "lib/frames_productinfo.csv", headers: true, header_converters: :symbol
 		glasses.each do |row|		
 			name = row[:style]
@@ -19,6 +27,7 @@ namespace :import do
 			collection = row[:collection]
 			optical = row[:optical]
 			sku = clean_sku(row[:sku])
+			active = row[:active]
 
 			puts "#{name} - color: #{color} from collection #{collection} (sku: #{sku}) \n #{optical}"
 			puts "................"
@@ -26,8 +35,11 @@ namespace :import do
 				:name => row[:style],
 				:color => row[:color],
 				:collection => row[:collection],
-				:optical => row[:optical],
-				:sku => clean_sku(row[:sku])
+				:optical => optical(row[:optical]),
+				:sku => clean_sku(row[:sku]),
+				:active => row[:active],
+				:male => row[:male],
+				:female => row[:female]
 				) 
 		end
 	end
