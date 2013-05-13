@@ -36,7 +36,7 @@ $(function(){
 <!--     <div>{{getComments()}}</div> -->
 
     <div class="main row-fluid"> 
-      <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
+      <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="" style="width: 200px;">
 <!--         <p>User: <a href="http://instagram.com/{{photo.user}}" target="_blank">{{photo.user}}</a></p>
         <p>Photo Date: {{photo.photo_taken_at_time}}</p>
         <p>Caption: {{photo.caption}}</p>
@@ -44,11 +44,7 @@ $(function(){
         <a href="{{photo.photo_link}}" target="_blank"><img src="{{photo.photo}}"></a><br>
         <!-- <div ng-repeat="comment in photo.comments">
           <p><b>{{comment.user}} says</b>: {{comment.comment}}</p> -->
-        </div>
       </div>
     </div>
-
-
   </div>
-
 </div>

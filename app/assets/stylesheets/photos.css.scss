@@ -23,14 +23,12 @@
 .photo {
   // border: solid;
   display: inline-block;
-  width: 40%;
-  padding: 2em;
-  margin-bottom: 2em;
-  margin-right: 2em;
-  margin-left: 2em;
-
+  color: #ECF0F1;
+  border-radius: 100px;
+  padding: 2px;
   img {
     width: 100%;
+    border-radius: 100px;
   }
 }
 
@@ -42,6 +40,21 @@
   width: 100%;
   // border-right: solid;
 }
+// .ss-container {
+//   position: relative;
+//   width: 100%;
+// }
 
-.detail {
-}
+// .ss-container li {
+//   border: 1px solid #666;
+//   position: absolute;
+//   width: 70px;
+// }
+
+// .ss-container li.ss-placeholder-child {
+//   border: 1px dashed #DDD;
+// }
+
+// .ss-container li[data-ss-colspan="2"] { width: 141px; }
+// .ss-container li[data-ss-colspan="3"] { width: 212px; }
+// .ss-container li[data-ss-colspan="4"] { width: 283px; }
