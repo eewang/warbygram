@@ -14,7 +14,7 @@ ActiveAdmin.register_page "Dashboard" do
 
       column do
         panel "Warby Parker Tags", :class => "panel_chart" do
-          render(:partial => '/admin/warby_tags', :locals => {:frames_data => Glasses.comments_metadata})
+          render(:partial => '/admin/warby_tags')
         end
       end
 
@@ -25,7 +25,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Warby Parker Frame References (Captions and Comments)", :class => "panel_chart" do
           div do
-            render(:partial => '/admin/frame_references', :locals => {:frames_data => Glasses.comments_metadata})
+            render(:partial => '/admin/frame_references')
           end
         end
       end
