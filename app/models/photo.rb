@@ -19,8 +19,8 @@ class Photo < ActiveRecord::Base
   include Saveable::InstanceMethods
 
   WARBY_TAGS = ["warby", "warbyparker"]
-
   EXCLUDED_TAGS = ["warbyrange", "warbyranges", "warbyticarmo"]
+  EXCLUDED_USERS = ["war_by_ticarmo", "silent_rangr"]
 
   WARBY_LOCATIONS = [
     "121 Greene Street, New York NY",
@@ -271,11 +271,14 @@ class Photo < ActiveRecord::Base
         :photos => Photo.where(:instagram_user_id => user[0].to_i).collect { |p| p.id }
       }
     end
+    get_top_users.delete_if { |i| EXCLUDED_USERS.include?(i[:user_name]) }
   end
 
   def self.home_tryon
-    home_tryon_photos = Photo.includes(:tags).collect { |p|
-      p if p.tags.collect { |t| t.name }.grep(/hometryon/).present?
+    home_tryon_photos = Photo.includes(:tags).includes(:comments).collect { |p|
+      if p.tags.collect { |t| t.name }.grep(/hometryon/).present? || p.comments.collect { |c| c.comment }.grep(/hometryon/).present?
+        p
+      end
     }.delete_if { |d| d.nil? }
   end
 
