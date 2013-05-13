@@ -1,5 +1,3 @@
-
-
 var PhotoApp = angular.module('PhotoApp', ['ngResource', 'components']);
 
 PhotoApp.factory('Data', function(){

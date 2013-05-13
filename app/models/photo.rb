@@ -222,9 +222,10 @@ class Photo < ActiveRecord::Base
   end
 
   def self.get_photos_with_location
-    Photo.all.collect { |item|
+    photos = Photo.all.collect { |item|
       if item.latitude && item.longitude
-        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
+        user = InstagramUser.find(item.instagram_user_id)
+        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude, :user => { :name => user.user_name, :pic => user.profile_picture, :link => "http://instagram.com/#{user.user_name}"} }
       end
     }.compact!
   end

@@ -7,7 +7,7 @@ ActiveAdmin.register_page "Photo Feed" do
       column do 
         panel "Photo Feed" do
           div do
-            render(:partial => '/admin/photo_feed')
+            render(:partial => '/admin/photo_feed', :locals => { :photos => Photo.photo_feed(25) })
           end # div
         end # panel
       end # column

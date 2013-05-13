@@ -16,19 +16,31 @@
       var map = new google.maps.Map(document.getElementById("map-canvas"),
         mapOptions);
 
+      var info_window_content;
+      var infowindow;
+      var coordinates;
+
       <% map_data.each do |item| %>
 
-        var marker = new google.maps.Marker({
-          map: map
+        coordinates = new google.maps.LatLng(
+            <%= item[:latitude] %>,
+            <%= item[:longitude] %>
+            )
+
+        infowindow = new google.maps.InfoWindow({
+          position: coordinates
         })
 
-        marker.setPosition(new google.maps.LatLng(
-          <%= item[:latitude] %>,
-          <%= item[:longitude] %>
-          ))
+        marker = new google.maps.Marker({
+          map: map,
+          position: coordinates,
+        })
 
-        google.maps.event.addListener(marker, 'click', function(){
-          console.log(<%= "#{item[:latitude]}, #{item[:longitude]}" %>)
+        google.maps.event.addListener(marker, 'mouseover', function(e){
+          info_window_content = '<%= link_to(item[:user][:name], item[:user][:link], :target => "_blank") %><br><%= image_tag(item[:user][:pic]) %>';
+          infowindow.setContent(info_window_content);
+          console.log(info_window_content);
+          infowindow.open(map, this);
         })
 
       <% end %>
@@ -41,4 +53,4 @@
 
 </script>
 
-<div id="map-canvas" style="width:100em; height:50em;"></div>
+<div id="map-canvas" style="width:110em; height:50em;"></div>
