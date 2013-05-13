@@ -1,4 +1,6 @@
 ActiveAdmin.register Glasses do
+  menu :parent => "Data Tables", :priority => 20
+
 	scope :all
 	scope :optical
 	scope :sunwear

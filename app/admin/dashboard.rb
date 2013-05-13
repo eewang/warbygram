@@ -1,6 +1,6 @@
 ActiveAdmin.register_page "Dashboard" do
 
-  menu :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
+  menu :parent => "Data Analytics", :priority => 1, :label => proc{ I18n.t("active_admin.dashboard") }
 
   content :title => proc{ I18n.t("active_admin.dashboard") } do
     # div :class => "blank_slate_container", :id => "dashboard_default_message" do
@@ -13,13 +13,8 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
-        panel "Tag Map" do
-          div do 
-            render(:partial => '/admin/photo_map', :locals => 
-              {:start_center => Geocoder.coordinates("188 Suffolk Street, New York NY"),
-              :map_data => Photo.get_photos_with_location}
-              )
-          end
+        panel "Warby Parker Tags" do
+          render(:partial => '/admin/warby_tags', :locals => {:frames_data => Glasses.comments_metadata})
         end
       end
 
@@ -28,9 +23,9 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
-        panel "Tag chart" do
+        panel "Warby Parker Frames" do
           div do
-            render(:partial => '/admin/sidebar_links', :locals => {:frames_data => Glasses.comments_metadata})
+            render(:partial => '/admin/frame_references', :locals => {:frames_data => Glasses.comments_metadata})
           end
         end
       end

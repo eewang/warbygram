@@ -1,0 +1,13 @@
+<% photos.each do |p| %>
+<div class="photo">
+  <%= link_to(p[:user], "http://instagram.com/#{p[:user]}", :target => "_blank") %>
+  <div><%= p[:photo_taken_at_time] %></div>
+  <%= link_to(image_tag(p[:photo]), p[:photo_link], :target => "_blank" ) %>
+  <div><%= p[:caption] %></div>
+  <% if p[:comments] %>
+    <% p[:comments].each do |c| %>
+      <div><%= c[:user] %>: <%= c[:comment] %></div>
+    <% end %>
+  <% end %>
+</div>
+<% end %>

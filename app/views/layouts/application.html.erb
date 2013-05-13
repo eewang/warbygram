@@ -12,12 +12,12 @@
 
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "http://localhost:9292/faye.js" %>
+  <%#= javascript_include_tag ENV["FAYE_SERVER"] + "/faye.js" %>
   <%= javascript_include_tag "http://code.angularjs.org/1.1.4/angular-resource.min.js" %>
   <%= csrf_meta_tags %>
 </head>
-<body>
- <%= bootstrap_flash %>
+<body ng-app="PhotoApp">
+<%= bootstrap_flash %>
 
 <%= render :partial => 'layouts/header' %>
 <div class="container-fluid">

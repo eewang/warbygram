@@ -14,12 +14,16 @@ class GlassesController < ApplicationController
     respond_with Glasses.comments_metadata.sort_by { |i| i[:count] }.reverse
   end
 
+  def comment_and_caption_data
+    respond_with Glasses.comment_and_caption_metadata.sort_by { |i| i[:caption_count] + i[:comment_count] }.reverse
+  end
+
   def warby_related_tags
     respond_with WarbyTag.tag_metadata.sort_by { |i| i[:count] }.reverse
   end
 
   def new
-    # render :text => "testing faye"
+    render :text => "testing faye"
   end
 
 end

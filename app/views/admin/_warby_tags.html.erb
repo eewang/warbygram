@@ -1,0 +1,45 @@
+
+<script>
+
+	$(document).ready(function() {
+
+		$.get('/warby_related_tags', function(ajax_data){
+			console.log(ajax_data);
+			var tag_data = [];
+			var tag_list = [];
+
+			for(var i = 0; i < ajax_data.length; i++) {
+				tag_data.push({ label: ajax_data[i].tag, value: ajax_data[i].count });
+				tag_list.push({ text: ajax_data[i].tag, weight: ajax_data[i].count });
+			}
+
+			new Morris.Donut({
+			  element: 'tag-chart',
+			  data: tag_data,
+			  colors: ['#F4645D', '#724E3B', '#A3654D', '#F1A991', '#ACC9D1', '#A29378'],
+			});
+
+			$("#tag-wordcloud").jQCloud(tag_list);
+
+		});
+
+	});
+
+</script>
+
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 }
+  #map-canvas { height: 100% }
+</style>
+
+<section>
+
+	<div class="row">
+		<div class="row">
+			<div class="grid-6" id="tag-chart" style="height: 350px;"></div>
+		</div>
+		<div class="grid-6" id="tag-wordcloud" style="width: 550px; height: 350px; position: relative;"></div>	
+		<div class="grid-6" style="width: 100%; position: relative;">testing</div>
+	</div>
+</section>
