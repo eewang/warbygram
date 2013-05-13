@@ -37,7 +37,7 @@
         })
 
         google.maps.event.addListener(marker, 'mouseover', function(e){
-          info_window_content = '<%= link_to(item[:user][:name], item[:user][:link], :target => "_blank") %><br><%= image_tag(item[:user][:pic]) %>';
+          info_window_content = '<%= link_to(item[:user][:name], item[:user][:link], :target => "_blank") %><br><%= link_to(image_tag(item[:user][:pic]), item[:user][:link], :target => "_blank" ) %>';
           infowindow.setContent(info_window_content);
           console.log(info_window_content);
           infowindow.open(map, this);

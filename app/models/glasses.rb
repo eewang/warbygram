@@ -10,7 +10,7 @@ class Glasses < ActiveRecord::Base
   has_many :colors, :through => :glasses_colors
 
   SPECIAL_TAGS = {
-    :liv => /liv/i
+    :liv => /\bliv\b/i
   }
 
   def self.scrape_glasses(url)
@@ -69,7 +69,7 @@ class Glasses < ActiveRecord::Base
 
   def comment_search_for_product
     comments = []
-    tag_regexp = /#{self.name}/i
+    tag_regexp = SPECIAL_TAGS[self.name.downcase.to_sym] || /#{self.name}/i
     comments << Comment.all.collect do |comment|
       if comment.comment =~ tag_regexp
         { :comment_id => comment.id, 
@@ -83,7 +83,7 @@ class Glasses < ActiveRecord::Base
 
   def caption_search_for_product
     photos = []
-    tag_regexp = /#{self.name}/i
+    tag_regexp = SPECIAL_TAGS[self.name.downcase.to_sym] || /#{self.name}/i
     photos << Photo.all.collect do |photo| 
       if photo.caption =~ tag_regexp 
         {:photo_id => photo.id, :tag => self.name, :caption => photo.caption}
@@ -133,6 +133,7 @@ class Glasses < ActiveRecord::Base
         :caption_count => item.caption_search_for_product.size, 
         :comment_count => item.comment_search_for_product.size}
     end
+    array.delete_if { |t| t[:caption_count] + t[:comment_count] == 0}
   end
 
   def tag_exists?
