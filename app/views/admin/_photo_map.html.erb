@@ -5,7 +5,7 @@
   var start_center = <%= start_center %>
 
   google.maps.event.addDomListener(window, 'load', function(){
-
+    
     function initialize(){
       var mapOptions = {
         center: new google.maps.LatLng(start_center[0], start_center[1]),
@@ -33,7 +33,7 @@
 
         marker = new google.maps.Marker({
           map: map,
-          position: coordinates,
+          position: coordinates
         })
 
         google.maps.event.addListener(marker, 'mouseover', function(e){
@@ -53,4 +53,4 @@
 
 </script>
 
-<div id="map-canvas" style="width:110em; height:50em;"></div>
+<div id="map-canvas" style="width:140em; height:50em;"></div>

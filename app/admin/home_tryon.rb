@@ -1,5 +1,7 @@
 ActiveAdmin.register_page "Home Try On" do
 
+  menu :parent => "Real Time Feed"
+
   content :title => proc{ I18n.t("active_admin.dashboard") } do
 
     columns do

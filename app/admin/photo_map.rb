@@ -1,5 +1,7 @@
 ActiveAdmin.register_page "Photo Map" do
 
+  menu :parent => "Data Analytics"
+
   content :title => proc{ I18n.t("active_admin.dashboard") } do
 
     columns do
