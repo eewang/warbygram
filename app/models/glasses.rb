@@ -6,6 +6,9 @@ class Glasses < ActiveRecord::Base
   scope :sunwear, where(:optical => false)
   # scope :all, where(:optical => (true || false))
 
+  has_many :glasses_colors
+  has_many :colors, :through => :glasses_colors
+
   SPECIAL_TAGS = {
     :liv => /liv/i
   }

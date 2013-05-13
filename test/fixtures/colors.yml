@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  cc: 1
+  color: MyString
+  color_family: MyString
+  color_assignment: MyString
+
+two:
+  cc: 1
+  color: MyString
+  color_family: MyString
+  color_assignment: MyString

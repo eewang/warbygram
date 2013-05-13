@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130506032511) do
+ActiveRecord::Schema.define(:version => 20130513132843) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -46,6 +46,15 @@ ActiveRecord::Schema.define(:version => 20130506032511) do
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
 
+  create_table "colors", :force => true do |t|
+    t.integer  "cc"
+    t.string   "color"
+    t.string   "color_family"
+    t.string   "color_assignment"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
   create_table "comments", :force => true do |t|
     t.string   "comment"
     t.integer  "photo_id"
@@ -69,6 +78,16 @@ ActiveRecord::Schema.define(:version => 20130506032511) do
     t.boolean  "female"
     t.boolean  "male"
   end
+
+  create_table "glasses_colors", :force => true do |t|
+    t.integer  "color_id"
+    t.integer  "glasses_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "glasses_colors", ["color_id"], :name => "index_glasses_colors_on_color_id"
+  add_index "glasses_colors", ["glasses_id"], :name => "index_glasses_colors_on_glasses_id"
 
   create_table "instagram_users", :force => true do |t|
     t.string   "user_name"
