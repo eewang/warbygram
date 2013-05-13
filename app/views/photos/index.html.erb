@@ -10,32 +10,39 @@ $(function(){
 
 </script>
 
-<h1>Warby Instagram Photos</h1>
+<div class="row">
+  <div class="span8 offset1"></div>
+</div>
 
-<div ng-app = "PhotoApp">
+<div ng-app="PhotoApp">
 
   <div ng-controller="PhotoCtrl" class="photo_set">
 
-    <div class="search">
-      <input ng-model="query">
-      <h3>Filter Term: {{query}}<h3>
-      <input ng-model="stylechoice">
+  <div class="row">    
+    <div class="span6 offset3">
+      <h3>Instagram Photos tagged #WARBY</h3>
+      <div class="todo-search">      
+        <input ng-model="query" placeholder="Enter #hashtag term here" class="todo-search-field span5">
+      </div>
+      <h3>{{query}}<h3>
+<!--       <input ng-model="stylechoice">
       <h5>Styleize!: {{stylechoice}}</h5>
-
-      <h5>There are {{getTotalPhotos()}} photos in this collection</h5>
+ -->
+      <h5>{{getTotalPhotos()}} photo results</h5>
     </div>
+  </div>
 
 <!--     <div>{{getComments()}}</div> -->
 
-    <div class="main"> 
+    <div class="main row-fluid"> 
       <div ng-repeat="photo in photos | filter:query" class="photo {{stylechoice}}" ng-click="styleclass = {{stylechoice}}" ng-click="">
-        <p>User: <a href="http://instagram.com/{{photo.user}}" target="_blank">{{photo.user}}</a></p>
+<!--         <p>User: <a href="http://instagram.com/{{photo.user}}" target="_blank">{{photo.user}}</a></p>
         <p>Photo Date: {{photo.photo_taken_at_time}}</p>
         <p>Caption: {{photo.caption}}</p>
-        <hr>
+        <hr> -->
         <a href="{{photo.photo_link}}" target="_blank"><img src="{{photo.photo}}"></a><br>
-        <div ng-repeat="comment in photo.comments">
-          <p><b>{{comment.user}} says</b>: {{comment.comment}}</p>
+        <!-- <div ng-repeat="comment in photo.comments">
+          <p><b>{{comment.user}} says</b>: {{comment.comment}}</p> -->
         </div>
       </div>
     </div>
