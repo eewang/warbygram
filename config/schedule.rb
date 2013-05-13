@@ -34,6 +34,6 @@ every 12.hours do
   rake "warby:all_photos"
 end
 
-every 1.day, :at => '7:30 am' do
+every 1.day, :at => '8:00 am' do
   rake "warby:tags"
 end

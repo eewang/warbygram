@@ -72,7 +72,7 @@ div.jqcloud span.w1 { color: #A3654D; }
 /* layout */
 
 div.jqcloud {
-  overflow: hidden;
+/*  overflow: hidden;*/
   position: relative;
 }
 
@@ -90,4 +90,10 @@ div.jqcloud span { padding: 0; }
   img {
     width: 100%;
   }
+}
+
+.panel_chart {
+  width: 100%;
+  float: left;
+  padding-bottom: 2em !important;
 }

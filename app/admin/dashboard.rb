@@ -13,7 +13,7 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
-        panel "Warby Parker Tags" do
+        panel "Warby Parker Tags", :class => "panel_chart" do
           render(:partial => '/admin/warby_tags', :locals => {:frames_data => Glasses.comments_metadata})
         end
       end
@@ -23,7 +23,7 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
 
       column do
-        panel "Warby Parker Frames" do
+        panel "Warby Parker Frame References (Captions and Comments)", :class => "panel_chart" do
           div do
             render(:partial => '/admin/frame_references', :locals => {:frames_data => Glasses.comments_metadata})
           end
@@ -54,24 +54,5 @@ ActiveAdmin.register_page "Dashboard" do
 
     end # columns
 
-    # Here is an example of a simple dashboard with columns and panels.
-    #
-    # columns do
-    #   column do
-    #     panel "Recent Posts" do
-    #       ul do
-    #         Post.recent(5).map do |post|
-    #           li link_to(post.title, admin_post_path(post))
-    #         end
-    #       end
-    #     end
-    #   end
-
-    #   column do
-    #     panel "Info" do
-    #       para "Welcome to ActiveAdmin."
-    #     end
-    #   end
-    # end
   end # content
 end
