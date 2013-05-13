@@ -1,4 +1,7 @@
-ActiveAdmin.register AdminUser do     
+ActiveAdmin.register AdminUser do 
+
+  menu :parent => "Data Tables"
+
   index do                            
     column :email                     
     column :current_sign_in_at        

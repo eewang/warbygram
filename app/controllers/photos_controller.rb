@@ -1,6 +1,10 @@
 class PhotosController < ApplicationController
   respond_to :json, :html
 
+  def top_users
+    respond_with Photo.top_users(3)
+  end
+
   def index
     respond_with Photo.order("photo_taken_at_time DESC")[0..24]
   end

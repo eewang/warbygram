@@ -77,3 +77,17 @@ div.jqcloud {
 }
 
 div.jqcloud span { padding: 0; }
+
+.photo {
+  border: solid;
+  display: inline-block;
+  width: 40%;
+  padding: 2em;
+  margin-bottom: 2em;
+  margin-right: 5em;
+  margin-left: 5em !important;
+
+  img {
+    width: 100%;
+  }
+}

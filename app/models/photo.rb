@@ -20,6 +20,8 @@ class Photo < ActiveRecord::Base
 
   WARBY_TAGS = ["warby", "warbyparker"]
 
+  EXCLUDED_TAGS = ["warbyrange", "warbyranges", "warbyticarmo"]
+
   WARBY_LOCATIONS = [
     "121 Greene Street, New York NY",
     "295 Lafayette Street, New York NY",
@@ -143,6 +145,7 @@ class Photo < ActiveRecord::Base
   def self.get_warby_tag_metadata
     WARBY_TAGS.each do |tag|
       tag_results = InstagramWrapper.new.tag_search(:tag => tag)
+      tag_results.reject! { |h| EXCLUDED_TAGS.include?(h["name"]) }
       tag_results.each do |tag_result|
         item = WarbyTag.where(:tag => tag_result[:name]).first_or_create
         item.count = tag_result[:media_count]
@@ -152,7 +155,7 @@ class Photo < ActiveRecord::Base
   end
 
   def self.save_warby_tagged_photos
-    WarbyTag.all.each do |warby_tag|
+    WarbyTag.all.reject! { |t| EXCLUDED_TAGS.include?(t.tag) }.each do |warby_tag|
       Photo.save_tagged_photos(warby_tag.tag)
     end
   end
@@ -198,9 +201,7 @@ class Photo < ActiveRecord::Base
   end
 
   def address
-    if self.latitude
-      Geocoder.search([self.latitude, self.longitude])[0].address
-    end
+    Geocoder.search([self.latitude, self.longitude])[0].address if self.latitude
   end
 
   def self.geotagged
@@ -208,7 +209,7 @@ class Photo < ActiveRecord::Base
   end
 
   def self.caption_search(query)
-    regexp = /#{query}/i
+    regexp = /##{query}\s/i
     results = Photo.all.collect { |photo|
       if photo.caption =~ regexp
         {:photo_id => photo.id, :caption => photo.caption}
@@ -223,19 +224,10 @@ class Photo < ActiveRecord::Base
   def self.get_photos_with_location
     Photo.all.collect { |item|
       if item.latitude && item.longitude
-        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude}
+        user = InstagramUser.find(item.instagram_user_id)
+        {:photo => item.id, :latitude => item.latitude, :longitude => item.longitude, :user => { :name => user.user_name, :pic => user.profile_picture, :link => "http://instagram.com/#{user.user_name}"} }
       end
     }.compact!
-  end
-
-  def self.search_instagram_captions
-    # Determine the top 10 photo coordinates that have the most photos tagged with something warby-related within 5 km saved in the database
-
-    # Search instagram with these photo coordinates every 6 minutes (i.e., each is searched every hour)
-
-    # With the instagram photo json data that is returned by the Instagram API, search the caption for any references (via regex), but especially @references to warby parker or frames (for frames, use @<frame name>)
-
-    # If there is any term referenced within the caption, then save the photo
   end
 
   def self.near_coordinates(coordinates, distance) # distance should be 5 km
@@ -265,6 +257,26 @@ class Photo < ActiveRecord::Base
         photo
       end
     }.compact!
+  end
+
+  def self.top_users(min_count)
+    get_top_users = group(:instagram_user_id).size.sort_by { |h| h[1] }.delete_if { |i| i[1] < min_count }.reverse
+    get_top_users.collect! do |user|
+      instagram_user = InstagramUser.find(user[0].to_i)
+      { :user_name => instagram_user.user_name,
+        :full_name => instagram_user.full_name,
+        :profile_pic => instagram_user.profile_picture,
+        :profile => "http://instagram.com/#{instagram_user.user_name}",
+        :photos_taken => user[1],
+        :photos => Photo.where(:instagram_user_id => user[0].to_i).collect { |p| p.id }
+      }
+    end
+  end
+
+  def self.home_tryon
+    home_tryon_photos = Photo.includes(:tags).collect { |p|
+      p if p.tags.collect { |t| t.name }.grep(/hometryon/).present?
+    }.delete_if { |d| d.nil? }
   end
 
 end
