@@ -4,22 +4,30 @@ namespace :import do
 	desc 'Imports product info CSV file into ActiveRecord table'
 	task :glasses => :environment do
 
+		def clean_sku(sku)
+			if sku == "#REF!"
+				""
+			else
+				sku
+			end
+		end
+
 		glasses = CSV.open "lib/frames_productinfo.csv", headers: true, header_converters: :symbol
 		glasses.each do |row|		
 			name = row[:style]
 			color = row[:color]
 			collection = row[:collection]
 			optical = row[:optical]
-			sku = row[:sku]
+			sku = clean_sku(row[:sku])
 
 			puts "#{name} - color: #{color} from collection #{collection} (sku: #{sku}) \n #{optical}"
 			puts "................"
-			Glasses.first_or_create!(
+			Glasses.create!(
 				:name => row[:style],
 				:color => row[:color],
 				:collection => row[:collection],
 				:optical => row[:optical],
-				:sku => row[:sku]
+				:sku => clean_sku(row[:sku])
 				) 
 		end
 	end
