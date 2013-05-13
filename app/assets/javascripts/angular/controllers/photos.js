@@ -1,5 +1,3 @@
-
-
 var PhotoApp = angular.module('PhotoApp', ['ngResource', 'components']);
 
 PhotoApp.factory('Data', function(){
@@ -42,6 +40,10 @@ function CommentCtrl($scope, Comment){
 
 function PhotoCtrl($scope, Photo, $http){
   $scope.photos = Photo.query();
+
+  $scope.test = function(){
+    return "this is a test";
+  }
 
   $scope.getComments = function(){
     comment = $http.get('comments/100.json')

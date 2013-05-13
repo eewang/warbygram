@@ -5,6 +5,11 @@ class Glasses < ActiveRecord::Base
   scope :optical, where(:optical => true)
   scope :sunwear, where(:optical => false)
   # scope :all, where(:optical => (true || false))
+
+  SPECIAL_TAGS = {
+    :liv => /liv/i
+  }
+
   def self.scrape_glasses(url)
   	doc = Nokogiri::HTML(open(url))
 
@@ -115,6 +120,15 @@ class Glasses < ActiveRecord::Base
     unique_glasses = glasses.uniq { |c| c[:tag] }
     array = unique_glasses.collect do |item|
       {:tag => item[:tag], :count => glasses.count { |i| i[:tag] == item[:tag] }}
+    end
+  end
+
+  def self.comment_and_caption_metadata
+    glasses = Glasses.group(:name)
+    array = glasses.collect do |item|
+      { :tag => item.name, 
+        :caption_count => item.caption_search_for_product.size, 
+        :comment_count => item.comment_search_for_product.size}
     end
   end
 
